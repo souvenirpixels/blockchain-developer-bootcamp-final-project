@@ -41,12 +41,12 @@ Photography licencor should be able to purchase a licence to use the photo comme
 1. Licensor is able to view photo with metadata
 
 ```
-/// @notice The metadata Uniform Resource Identifier (URI) for a given photo
+/// @notice The stored information for a given photo
 /// @dev Throws if photo with ID is not valid
 /// @param id Id of the photo
-/// @return The full metadata URI
+/// @return JSON string with the owner, metadataURI and price
 
-function metaDataURI (uint256 id) external view returns (string) {
+function assetInfo (uint256 id) external view returns (string) {
 
 }
 ```
