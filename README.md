@@ -22,14 +22,14 @@ Stock photographers should be able to list a photo for sale.
 
 ```
 /// @notice Registers a photo for sale in the contract
-/// @dev metaDataURI and assetURI should have prefix http, https, ipfs or ar.  For example, use ar://MAVgEMO3qlqe-qHNVs00qgwwbCb6FY2k15vJP3gBLW4 instead of https://arweave.net/MAVgEMO3qlqe-qHNVs00qgwwbCb6FY2k15vJP3gBLW4.
+/// @dev metaDataURI and assetURI should have prefix http, https, ipfs or ar.  For example, use ar://MAVgEMO3qlqe-qHNVs00qgwwbCb6FY2k15vJP3gBLW4 
+///      instead of https://arweave.net/MAVgEMO3qlqe-qHNVs00qgwwbCb6FY2k15vJP3gBLW4.  Emits Created with ID of asset when completed.
 /// @param owner The address of the photo copyright owner
 /// @param metaDataURI URI of the json file containing the metadata in JSON format.
 /// @param assetURI URI of the full size photo the licence would be purchased for.
 /// @param price To purchase a licence
-/// @return The ID of the newly created asset.  This ID can be used to purchase a licence to the photo.
 
-function create (address owner, string metaDataURI, string assetURI, uint256 price) external returns (uint256) {
+function createAsset (address owner, string calldata metaDataURI, string calldata assetURI, uint256 price) external {
 
 }
 ```
@@ -44,9 +44,9 @@ Photography licencor should be able to purchase a licence to use the photo comme
 /// @notice The stored information for a given photo
 /// @dev Throws if photo with ID is not valid
 /// @param id Id of the photo
-/// @return JSON string with the owner, metadataURI and price
+/// @return owner, metadataURI and price
 
-function assetInfo (uint256 id) external view returns (string) {
+function assetInfo (uint256 id) external view returns (address owner, string memory metaDataURI, uint256 price) {
 
 }
 ```
