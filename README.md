@@ -21,17 +21,15 @@ Stock photographers should be able to list a photo for sale.
     * Purchase Price
 
 ```
-/// @notice Registers a photo for sale in the contract
-/// @dev metaDataURI and assetURI should have prefix http, https, ipfs or ar.  For example, use ar://MAVgEMO3qlqe-qHNVs00qgwwbCb6FY2k15vJP3gBLW4 
-///      instead of https://arweave.net/MAVgEMO3qlqe-qHNVs00qgwwbCb6FY2k15vJP3gBLW4.  Emits Created with ID of asset when completed.
-/// @param owner The address of the photo copyright owner
-/// @param metaDataURI URI of the json file containing the metadata in JSON format.
-/// @param assetURI URI of the full size photo the licence would be purchased for.
-/// @param price To purchase a licence
-
-function createAsset (address owner, string calldata metaDataURI, string calldata assetURI, uint256 price) external {
-
-}
+  /// @notice Registers a photo for sale in the contract
+  /// @dev metaDataURI and assetURI should have prefix http, https, ipfs or ar.  For example, use ar://MAVgEMO3qlqe-qHNVs00qgwwbCb6FY2k15vJP3gBLW4 
+  ///      instead of https://arweave.net/MAVgEMO3qlqe-qHNVs00qgwwbCb6FY2k15vJP3gBLW4.  Emits Created with ID of asset when completed.
+  /// @param metaDataURI URI of the json file containing the metadata in JSON format.
+  /// @param assetURI URI of the full size photo the licence would be purchased for.
+  /// @param price To purchase a licence
+  /// @param owner The address of the photo copyright owner
+  
+  function createAsset (string calldata metaDataURI, string calldata assetURI, uint256 price, address payable owner) external {
 ```
 
 ## License Purchase
@@ -41,29 +39,24 @@ Photography licencor should be able to purchase a licence to use the photo comme
 1. Licensor is able to view photo with metadata
 
 ```
-/// @notice The stored information for a given photo
-/// @dev Throws if photo with ID is not valid
-/// @param id Id of the photo
-/// @return owner, metadataURI and price
+  /// @notice The stored information for a given photo
+  /// @dev Throws if photo with ID is not valid
+  /// @param assetId Id of the photo
+  /// @return owner of the asset
+  /// @return metaDataURI of the asset
+  /// @return price of the asset in wei
 
-function assetInfo (uint256 id) external view returns (address owner, string memory metaDataURI, uint256 price) {
-
-}
+  function assetInfo (uint256 assetId) external view returns (address owner, string memory metaDataURI, uint256 price) {
 ```
 
 2. Licenser sends price to the smart contract
 3. Price is distributed to the photog
 4. Licensor receives proof of licence 
 ```
-/// @notice Creates a licence for caller and sends ETH to photo copyright
-/// @dev Throws if ETH sent with contract is less than price
-/// @param owner Address of account that will own the licence
-/// @param id Id of the photo to purchase
-/// @return Id representing the licence number
-
-function purchaseLicence(address owner, uint256 id) external payable returns (uint256) {
-    // Creates a licence for caller and sends ETH to photo copyright owner
-}
+  /// @notice Creates a licence for caller and sends ETH to photo copyright
+  /// @dev Throws if ETH sent with contract is less than price
+  /// @param assetId Id of the photo to purchase
+  function purchaseLicence(uint256 assetId) external payable {
 ```
 5. Licensor is able to download full size photo
 ```
@@ -79,11 +72,13 @@ function assetURI (uint256 id) external view returns (string) {
 
 ## Future Roadmap
 The following features may be added to project depending based on time available before due date.
-1. Ability to search a collection of photos for sale based on photo metadata.
+1. Ability to sell as an NFT on marketplaces like Opensea
+1. Ability to accept different cryptocurrencies / tokens for licence purchase (for example: DAI, USDC, USDT)
 1. Ability to share revenue from a photo sale with different people at specific percentages.
-1. Ability to accept different cryptocurrencies / tokens for purchase (for example: DAI, USDC, USDT)
+1. Ability to search a collection of photos for sale based on photo metadata.
+1. Require an custom ERC20 token to be staked in order to register a photo for sale.  The stake would be slashed for copyright infringement and invalid assetURI.
 1. Ability to flag photo as copyright infringement
 1. Ability to check if assetURI is a valid file before purchase
-1. Require an custom ERC20 token to be staked in order to register a photo for sale.  The stake would be slashed for copyright infringement and invalid assetURI.
 1. Volume discounts for purchasing many photos via an ERC20 token.
+1. Ability to upgrade the contract
 1. More secure way to restrict asset to the assetURI
