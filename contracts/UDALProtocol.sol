@@ -5,11 +5,14 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Pausable.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
 
-contract UDALProtocol is ERC721("UDALNFT", "UDALNFT"), ERC721Enumerable, ERC721Burnable, ERC721Pausable {
+contract UDALProtocol is ERC721("Universal Digital Asset Licencing NFT", "UDALNFT"), ERC721Enumerable, ERC721Burnable, ERC721Pausable, ERC721URIStorage {
+  using Counters for Counters.Counter;
+  Counters.Counter private _counter;
+
   struct AssetInfo {
-      address payable owner;              
-      string metaDataURI;      
       string assetURI;
       uint256 price;    // Price in wei
       uint256 purchasedLicenceCounter;
@@ -17,69 +20,76 @@ contract UDALProtocol is ERC721("UDALNFT", "UDALNFT"), ERC721Enumerable, ERC721B
   }
 
   mapping(uint256 => AssetInfo) private _assetInfo;
-  uint256 private counter;
-  
-  event AssetCreated(uint256 assetId);
+
   event LicencePurchased(string assetURI, uint256 amount);
 
   /// @notice Registers an assete for sale in the contract
-  /// @dev metaDataURI and assetURI should have prefix http, https, ipfs or ar.  For example, use ar://MAVgEMO3qlqe-qHNVs00qgwwbCb6FY2k15vJP3gBLW4 
+  /// @dev tokenURI and assetURI should have prefix http, https, ipfs or ar.  For example, use ar://MAVgEMO3qlqe-qHNVs00qgwwbCb6FY2k15vJP3gBLW4 
   ///      instead of https://arweave.net/MAVgEMO3qlqe-qHNVs00qgwwbCb6FY2k15vJP3gBLW4.  Emits Created with ID of asset when completed.
-  /// @param metaDataURI URI of the json file containing the metadata in JSON format.
-  /// @param assetURI URI of the full size file the licence would be purchased for.
+  /// @param _tokenURI URI of the json file containing the metadata in JSON format.  Should conform to the ERC721 Metadata JSON Schema
+  /// @param _assetURI URI of the full size file the licence would be purchased for.
   /// @param price To purchase a licence
-  /// @param owner The address of the copyright owner  function createAsset (string calldata metaDataURI, string calldata assetURI, uint256 price, address payable owner) external {
-  function createAsset (string calldata metaDataURI, string calldata assetURI, uint256 price, address payable owner) external {
-    AssetInfo storage newAssetInfo = _assetInfo[counter];
-    newAssetInfo.owner = owner;
-    newAssetInfo.metaDataURI = metaDataURI;
-    newAssetInfo.assetURI = assetURI;
+  /// @param owner The address of the copyright owner
+  function mint (string calldata _tokenURI, string calldata _assetURI, uint256 price, address payable owner) external {
+    _counter.increment();
+    uint256 newTokenId = _counter.current();
+    AssetInfo storage newAssetInfo = _assetInfo[newTokenId];
+    newAssetInfo.assetURI = _assetURI;
     newAssetInfo.price = price;
-    emit AssetCreated(counter);
-    counter++;
+    _safeMint(owner, newTokenId);
+    _setTokenURI (newTokenId, _tokenURI);
   }
 
   /// @notice The stored information for a given asset
   /// @dev Throws if asset with ID is not valid
-  /// @param assetId Id of the asset
+  /// @param tokenId Id of the asset
   /// @return owner of the asset
-  /// @return metaDataURI of the asset
   /// @return price of the asset in wei
-  function assetInfo (uint256 assetId) external view returns (address owner, string memory metaDataURI, uint256 price) {
-    require(assetId < counter, "Invalid Id provided.");
-    return (_assetInfo[assetId].owner, _assetInfo[assetId].metaDataURI, _assetInfo[assetId].price);
+  function assetInfo (uint256 tokenId) external view returns (address owner, uint256 price) {
+    require(_exists(tokenId), "AssetInfo query for nonexistent tokenId");
+    return (ownerOf(tokenId), _assetInfo[tokenId].price);
   } 
 
   /// @notice Creates a licence for caller and sends ETH to NFT owner
   /// @dev Throws if ETH sent with contract is less than price
-  /// @param assetId Id of the asset to purchase
-  function purchaseLicence(uint256 assetId) external payable {
-      require(assetId < counter, "Invalid Id provided.");
-      require (msg.value >= _assetInfo[assetId].price, "Not enough Eth to purchase");
-      require (!_assetInfo[assetId].purchasedLicences[msg.sender]);
+  /// @param tokenId Id of the asset to purchase
+  function purchaseLicence(uint256 tokenId) external payable {
+      require(_exists(tokenId), "AssetInfo query for nonexistent tokenId");
+      require (msg.value >= _assetInfo[tokenId].price, "Not enough Eth to purchase");
+      require (!_assetInfo[tokenId].purchasedLicences[msg.sender], "Licence already purchased");
 
-      _assetInfo[assetId].owner.transfer(msg.value);
-      _assetInfo[assetId].purchasedLicences[msg.sender] = true;
-      emit LicencePurchased(_assetInfo[assetId].assetURI, msg.value);
+      payable(ownerOf(tokenId)).transfer(msg.value);
+      _assetInfo[tokenId].purchasedLicences[msg.sender] = true;
+      emit LicencePurchased(_assetInfo[tokenId].assetURI, msg.value);
   }
 
   /// @notice The metadata Uniform Resource Identifier (URI) for a given asset
   /// @dev Throws if asset with ID is not valid. Also throws if the caller hasn't purchased the asset ID.
-  /// @param assetId Id of the asset
-  /// @return metaDataURI of the fill size asset
-  function getAssetURI(uint256 assetId) external view returns (string memory metaDataURI) {
-    require(assetId < counter, "Invalid Id provided.");
-    require(_assetInfo[assetId].purchasedLicences[msg.sender], "Sender has not purchased licence.");
-    return _assetInfo[assetId].assetURI;
+  /// @param tokenId Id of the asset
+  /// @return assetURI of the fill size asset
+  function assetURI(uint256 tokenId) external view returns (string memory) {
+    require(_exists(tokenId), "AssetInfo query for nonexistent tokenId");
+    require(_assetInfo[tokenId].purchasedLicences[msg.sender], "Sender has not purchased licence");
+    return _assetInfo[tokenId].assetURI;
   }
 
-  // ERC721, ERC721Enumerable, ERC721Pausable include _beforeTokenTransfer we need to override all
+  // @notice Conforms to the ERC721 metadata extension - https://eips.ethereum.org/EIPS/eip-721
+  function tokenURI(uint256 tokenId) public view override(ERC721, ERC721URIStorage) returns (string memory) {
+    return super.tokenURI(tokenId);
+  }
+
+  // As ERC721, ERC721Enumerable, and ERC721Pausable include _beforeTokenTransfer we need to override all
   function _beforeTokenTransfer(address from, address to, uint256 amount) internal override(ERC721, ERC721Enumerable, ERC721Pausable) {
     super._beforeTokenTransfer(from, to, amount);
   }
 
-  // As both ERC721, ERC721Enumerable include supportsInterface we need to override both.
-  function supportsInterface(bytes4 interfaceId) public view virtual override(ERC721, ERC721Enumerable) returns (bool) {
+  // As ERC721 and ERC721Enumerable include supportsInterface we need to override both.
+  function supportsInterface(bytes4 interfaceId) public view override(ERC721, ERC721Enumerable) returns (bool) {
         return super.supportsInterface(interfaceId);
+  }
+
+  // As ERC721 and ERC721URIStorage include supportsInterface we need to override both.
+  function _burn(uint256 tokenId) internal override (ERC721, ERC721URIStorage)  {
+    super._burn(tokenId);
   }
 }
