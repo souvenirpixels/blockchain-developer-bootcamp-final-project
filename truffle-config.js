@@ -41,11 +41,11 @@ module.exports = {
     // tab if you use this network and you must also set the `host`, `port` and `network_id`
     // options below to some value.
     //
-    development: {
+    /*development: {
       host: "127.0.0.1",
       port: 7545,
       network_id: "*",
-    },
+    },*/
     // Another network with more advanced options...
     // advanced: {
     // port: 8777,             // Custom port

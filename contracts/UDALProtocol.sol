@@ -46,7 +46,7 @@ contract UDALProtocol is ERC721("Universal Digital Asset Licencing NFT", "UDALNF
   /// @return owner of the asset
   /// @return price of the asset in wei
   function assetInfo (uint256 tokenId) external view returns (address owner, uint256 price) {
-    require(_exists(tokenId), "AssetInfo query for nonexistent tokenId");
+    require(_exists(tokenId), "assetInfo query for nonexistent tokenId");
     return (ownerOf(tokenId), _assetInfo[tokenId].price);
   } 
 
@@ -54,7 +54,7 @@ contract UDALProtocol is ERC721("Universal Digital Asset Licencing NFT", "UDALNF
   /// @dev Throws if ETH sent with contract is less than price
   /// @param tokenId Id of the asset to purchase
   function purchaseLicence(uint256 tokenId) external payable {
-      require(_exists(tokenId), "AssetInfo query for nonexistent tokenId");
+      require(_exists(tokenId), "purchaseLicence query for nonexistent tokenId");
       require (msg.value >= _assetInfo[tokenId].price, "Not enough Eth to purchase");
       require (!_assetInfo[tokenId].purchasedLicences[msg.sender], "Licence already purchased");
 
@@ -68,8 +68,8 @@ contract UDALProtocol is ERC721("Universal Digital Asset Licencing NFT", "UDALNF
   /// @param tokenId Id of the asset
   /// @return assetURI of the fill size asset
   function assetURI(uint256 tokenId) external view returns (string memory) {
-    require(_exists(tokenId), "AssetInfo query for nonexistent tokenId");
-    require(_assetInfo[tokenId].purchasedLicences[msg.sender], "Sender has not purchased licence");
+    require(_exists(tokenId), "assetURI query for nonexistent tokenId");
+    require(_assetInfo[tokenId].purchasedLicences[msg.sender], "Has not been purchased");
     return _assetInfo[tokenId].assetURI;
   }
 

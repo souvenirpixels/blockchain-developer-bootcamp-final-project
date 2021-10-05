@@ -72,6 +72,7 @@ The following features may be added to project depending based on time available
 1. [In Progress] - Ability to sell as an NFT on marketplaces like Opensea
 1. [In Progress] - Circuit breaker to stop use of contract if bugs
 1. [In Progress] - Ability to stop the asset from being licenced (by burning)
+1. Ability to easily tell if a user has purchased a licence.
 1. Ability to accept different cryptocurrencies / tokens for licence purchase (for example: DAI, USDC, USDT)
 1. Ability to share revenue from a asset sale with different people at specific percentages.
 1. Ability to search a collection of assets for sale based on asset metadata.
@@ -82,7 +83,6 @@ The following features may be added to project depending based on time available
 1. Volume discounts for purchasing many assets via an ERC20 token.
 1. Ability to purchase different types of licences (standard vs extended, etc)
 1. Ability to check if assetURI is a valid file before purchase
-1. More secure way to restrict asset to the assetURI
 
 ## Getting Started
 Requires [Truffle](https://github.com/trufflesuite/truffle) and [Ganache GUI](https://www.trufflesuite.com/ganache) installed. 
