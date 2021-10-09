@@ -4,11 +4,10 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Pausable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
-contract UDALProtocol is ERC721("Universal Digital Asset Licencing NFT", "UDALNFT"), ERC721Enumerable, ERC721Burnable, ERC721Pausable, ERC721URIStorage {
+contract UDALProtocol is ERC721("Universal Digital Asset Licencing NFT", "UDALNFT"), ERC721Enumerable, ERC721Burnable, ERC721URIStorage {
   using Counters for Counters.Counter;
   Counters.Counter private _counter;
 
@@ -78,8 +77,8 @@ contract UDALProtocol is ERC721("Universal Digital Asset Licencing NFT", "UDALNF
     return super.tokenURI(tokenId);
   }
 
-  // As ERC721, ERC721Enumerable, and ERC721Pausable include _beforeTokenTransfer we need to override all
-  function _beforeTokenTransfer(address from, address to, uint256 amount) internal override(ERC721, ERC721Enumerable, ERC721Pausable) {
+  // As ERC721, ERC721Enumerable, and include _beforeTokenTransfer we need to override all
+  function _beforeTokenTransfer(address from, address to, uint256 amount) internal override(ERC721, ERC721Enumerable) {
     super._beforeTokenTransfer(from, to, amount);
   }
 

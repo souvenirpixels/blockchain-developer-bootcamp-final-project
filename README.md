@@ -28,7 +28,7 @@ Creators should be able to list assets for sale.
   /// @param _assetURI URI of the full size file the licence would be purchased for.
   /// @param price To purchase a licence
   /// @param owner The address of the copyright owner
-  function mint (string calldata _tokenURI, string calldata _assetURI, uint256 price, address payable owner) external 
+  function mint (string calldata _tokenURI, string calldata _assetURI, uint256 price, address payable owner) external
 ```
 
 ## License Purchase
@@ -43,10 +43,10 @@ Licencor should be able to purchase a licence to use the file commercially
   /// @param tokenId Id of the asset
   /// @return owner of the asset
   /// @return price of the asset in wei
-  function assetInfo (uint256 tokenId) external view returns (address owner, uint256 price) 
+  function assetInfo (uint256 tokenId) external view returns (address owner, uint256 price)
   
   // @notice Conforms to the ERC721 metadata extension - https://eips.ethereum.org/EIPS/eip-721
-  function tokenURI(uint256 tokenId) public view override(ERC721, ERC721URIStorage) returns (string memory) {
+  function tokenURI(uint256 tokenId) public view override(ERC721, ERC721URIStorage) returns (string memory)
 ```
 
 2. Licenser sends price to the smart contract
@@ -56,7 +56,7 @@ Licencor should be able to purchase a licence to use the file commercially
   /// @notice Creates a licence for caller and sends ETH to NFT owner
   /// @dev Throws if ETH sent with contract is less than price
   /// @param tokenId Id of the asset to purchase
-  function purchaseLicence(uint256 tokenId) external payable 
+  function purchaseLicence(uint256 tokenId) external payable
 ```
 5. Licensor is able to download full size file
 ```
@@ -64,14 +64,14 @@ Licencor should be able to purchase a licence to use the file commercially
   /// @dev Throws if asset with ID is not valid. Also throws if the caller hasn't purchased the asset ID.
   /// @param tokenId Id of the asset
   /// @return assetURI of the fill size asset
-  function assetURI(uint256 tokenId) external view returns (string memory) 
+  function assetURI(uint256 tokenId) external view returns (string memory)
 ```
 
 ## Future Roadmap
 The following features may be added to project depending based on time available before due date.
-1. [In Progress] - Ability to sell as an NFT on marketplaces like Opensea
-1. [In Progress] - Circuit breaker to stop use of contract if bugs
-1. [In Progress] - Ability to stop the asset from being licenced (by burning)
+1. Decide on a standard for how metadata is stored that is compatible with the ERC721 Metadata JSON Schema standard
+1. Circuit breaker to stop use of contract if bugs (Pauser), use access control to only allow those with access to pause.
+1. Change the licence to be an ERC1155 NFT token
 1. Ability to easily tell if a user has purchased a licence.
 1. Ability to accept different cryptocurrencies / tokens for licence purchase (for example: DAI, USDC, USDT)
 1. Ability to share revenue from a asset sale with different people at specific percentages.
