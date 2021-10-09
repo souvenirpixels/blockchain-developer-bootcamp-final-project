@@ -355,7 +355,13 @@ contract("UDALProtocol", function (accounts) {
       for (let i = 0; i < totalSupply; ++i) {
         assert.equal((await UDALInstance.tokenByIndex.call(i, { from: accounts[2] })).eq(assets[i].tokenId), true, 'token Ids should equal');
       }
-    });    
+    });
+
+    it("tokenOfOwnerByIndex returns a token ID owned by owner at a given index of its token list", async function() {
+      assert.equal(assets[0].tokenId.eq(await UDALInstance.tokenOfOwnerByIndex.call(assets[0].owner, 0, { from: accounts[8] })), true);
+      assert.equal(assets[2].tokenId.eq(await UDALInstance.tokenOfOwnerByIndex.call(assets[0].owner, 1, { from: accounts[8] })), true);
+        
+    });
 
     it("tokenByIndex throws if `_index` >= `totalSupply()`", async function() {
       await expectRevert(UDALInstance.tokenByIndex.call(totalSupply + 1, { from: accounts[2] }), 'ERC721Enumerable: global index out of bounds');
