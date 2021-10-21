@@ -59,6 +59,13 @@
  */
 import 'zone.js';  // Included with Angular CLI.
 
+// This solved build errors when loading web3 service
+declare var global: any;
+declare var require: any
+
+(window as any).global = window;
+global.Buffer = global.Buffer || require('buffer').Buffer;
+global.process = require('process');
 
 /***************************************************************************************************
  * APPLICATION IMPORTS
