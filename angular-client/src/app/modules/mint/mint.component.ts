@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-
 import { Web3Service } from '../../core/services/web3.service';
 
 @Component({
@@ -11,8 +10,6 @@ export class MintComponent implements OnInit {
 
   constructor(private web3Service: Web3Service) { }
 
-  ngOnInit(): void {
-    console.log('Mint loaded');
+  ngOnInit(): void { 
   }
-
 }

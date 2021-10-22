@@ -1,0 +1,6 @@
+
+
+<button *ngIf="connectedAccount == ''" type="button" (click)="onConnectClick()">
+    Connect Wallet
+</button>
+<span *ngIf="connectedAccount !== ''" >Wallet Address = {{connectedAccount}}</span>

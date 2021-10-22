@@ -6,7 +6,6 @@ const contract = require('@truffle/contract');
 
 declare let window: any;
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -18,10 +17,9 @@ export class Web3Service {
   public accountsObservable = new Subject<string[]>();
 
   constructor() {
-    window.addEventListener('load', (event: any) => {
-      console.log('WEB3 Service loaded');
+    /*window.addEventListener('load', (event: any) => {
       this.bootstrapWeb3();
-    });
+    });*/
   }
 
   public bootstrapWeb3() {
@@ -53,12 +51,10 @@ export class Web3Service {
     const contractAbstraction = contract(artifacts);
     contractAbstraction.setProvider(this.web3.currentProvider);
     return contractAbstraction;
-
   }
 
   private async refreshAccounts() {
     const accs = await this.web3.eth.getAccounts();
-    console.log('Refreshing accounts');
 
     // Get the initial account balance so it can be displayed.
     if (accs.length === 0) {
@@ -67,8 +63,6 @@ export class Web3Service {
     }
 
     if (!this.accounts || this.accounts.length !== accs.length || this.accounts[0] !== accs[0]) {
-      console.log('Observed new accounts');
-
       this.accountsObservable.next(accs);
       this.accounts = accs;
     }
