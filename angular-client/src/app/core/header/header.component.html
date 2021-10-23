@@ -1,6 +1,27 @@
-
-
-<button *ngIf="connectedAccount == ''" type="button" (click)="onConnectClick()">
-    Connect Wallet
-</button>
-<span *ngIf="connectedAccount !== ''" >Wallet Address = {{connectedAccount}}</span>
+<!--Navbar-->
+<mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark blue-grey darken-3" [containerInside]="false">
+    <mdb-navbar-brand><a class="navbar-brand" href="#">Consensys Bootcamp</a></mdb-navbar-brand>
+    <!-- Collapsible content -->
+    <links>
+  
+      <!-- Links -->
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item" routerLinkActive="active">
+          <a class="nav-link waves-light" [routerLink]="['/mint']" routerLinkActive="active" mdbWavesEffect><mdb-icon fas icon="cloud-upload-alt"></mdb-icon> Mint</a>
+        </li>
+        <li class="nav-item" routerLinkActive="active">
+          <a class="nav-link waves-light" [routerLink]="['/licence']" routerLinkActive="active" mdbWavesEffect><mdb-icon fas icon="shopping-cart"></mdb-icon> Licence<span class="sr-only"></span></a>
+        </li>
+        <li class="nav-item" routerLinkActive="active">
+          <a class="nav-link waves-light" [routerLink]="['/nfts']"  mdbWavesEffect><mdb-icon fas icon="images"></mdb-icon> My NFTs</a>
+        </li>     
+      </ul>
+      <!-- Links -->
+  
+      <ul class="navbar-nav ml-auto">
+            <button *ngIf="!connectedAccount" mdbBtn type="button" size="sm"  color="white" (click)="onConnectClick()" mdbWavesEffect>Connect Wallet</button>
+            <button *ngIf="connectedAccount" mdbBtn type="button" size="sm"  color="white" (click)="onConnectClick()" mdbWavesEffect>{{connectedAccount}}</button>
+      </ul>
+    </links>
+    <!-- Collapsible content -->
+</mdb-navbar>

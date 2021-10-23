@@ -9,12 +9,13 @@ import { Web3Service } from '../services/web3.service';
 export class HeaderComponent implements OnInit {
   connectedAccount: string;
 
-  constructor(private web3Service: Web3Service) { }
+  constructor(private web3Service: Web3Service) {
+  }
   
   ngOnInit(): void {
-    this.connectedAccount = '';
-    this.web3Service.accountsObservable.subscribe(resp => {
-      if (resp[0]) {
+    console.log('Init Web3Service');
+    this.web3Service.getAcccount().subscribe(resp => {
+      if (resp && resp[0]) {
         this.connectedAccount = resp[0];
       } else {
         this.connectedAccount = '';

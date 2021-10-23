@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Subject} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 declare let require: any;
 const Web3 = require('web3');
 const contract = require('@truffle/contract');
@@ -20,6 +20,13 @@ export class Web3Service {
     /*window.addEventListener('load', (event: any) => {
       this.bootstrapWeb3();
     });*/
+  }
+
+  public getAcccount(): Observable<string[]>  {
+    setTimeout(()=>{                          
+      this.accountsObservable.next(this.accounts);
+    }, 1);
+    return this.accountsObservable.asObservable();
   }
 
   public bootstrapWeb3() {
