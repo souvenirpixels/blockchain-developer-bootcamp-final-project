@@ -25,7 +25,7 @@ export class LDAPContractService {
    }
 
    mint(tokenURI: string, assetURI: string, price: number, owner: string): Promise<Asset> {
-    const trans = this.ldapContractInstance.mint(tokenURI, assetURI, price*100, owner, {from: "0x01110b38B176Ff1E208b0566a3bBaEc37954f5CA"});
+    const trans = this.ldapContractInstance.mint(tokenURI, assetURI, price*100, owner, {from: "0xd3d16f669EAd0Faa13eC9cb92c339Be0919A1549"});
     return trans;
     /*
       return this.ldapContractInstance.mint(tokenURI, assetURI, price, owner, (err: any, ev: any) => {
@@ -34,22 +34,17 @@ export class LDAPContractService {
    }
   
    search(): Observable <Asset[]> {
-    let a = new Asset('URI', 'AssetURI', 100, 'Address');
-    this.assetListCache.push(a);
-    this.assetListSubject.next(this.assetListCache);
     this.ldapContractInstance.totalSupply().then((totalSupplyBN: BN) => {
-      console.log('totalSupplyBN', totalSupplyBN);
       const totalSupply = totalSupplyBN.toNumber();
-      for (let t=1; t < totalSupply; ++t) {
+      this.assetListCache = []; // Blank out cache so can be reloaded
+      for (let t=1; t <= totalSupply; ++t) {
         var tBN = new BN(t);
         this.ldapContractInstance.assetInfo("1").then((a: any) => {
-          console.log('t=', a);
-        });
-        
+          this.assetListCache.push(new Asset(a.URI, '', a.price.toNumber() / 100, a.owner));
+          this.assetListSubject.next(this.assetListCache);
+        }); 
       }
-      console.log('TotalSupply=', totalSupply);
     });
-    
     return this.assetListSubject.asObservable();
    }
 }

@@ -9,8 +9,29 @@
           </h3>
         </mdb-card-header>
         <mdb-card-body class="px-lg-5 pt-0">
-            <p>TODO</p>
-            <button mdbBtn color="primary" class="z-depth-0 my-4 waves-effect" (click)="onMintClick()"  mdbWavesEffect>Mint</button>
+          <div class="md-form">
+            <mdb-icon fas icon="link" class="prefix"></mdb-icon>
+            <input mdbInput type="text" id="PhotoURL" class="form-control">
+            <label for="PhotoURL">Photo URL</label>
+          </div>
+
+          <div class="md-form">
+            <mdb-icon fas icon="link" class="prefix"></mdb-icon>
+            <input mdbInput type="text" id="MetadataURL" class="form-control">
+            <label for="MetadataURL">Metadata URL</label>
+          </div>
+          <div class="md-form">
+            <mdb-icon fab icon="ethereum" class="prefix"></mdb-icon>
+            <input mdbInput type="text" id="Price" class="form-control">
+            <label for="Price">Price</label>
+          </div>
+          <div class="md-form">
+            <mdb-icon fas icon="user" class="prefix"></mdb-icon>
+            <input mdbInput type="text" id="Owner" class="form-control">
+            <label for="Owner">Owner</label>
+          </div>
+          <button mdbBtn color="primary" class="z-depth-0 my-4 waves-effect mx-auto d-block" (click)="onMintClick()"  mdbWavesEffect>Mint</button>
+            
           <!-- Form -->
         </mdb-card-body>
       </mdb-card>      
