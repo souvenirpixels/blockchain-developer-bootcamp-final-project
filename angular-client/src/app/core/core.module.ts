@@ -9,6 +9,7 @@ import { ButtonsModule,
          InputsModule,
          CardsModule } from 'angular-bootstrap-md';
 import { RouterModule } from '@angular/router';
+import { LDAPContractService } from './services/ldapcontract.service';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { RouterModule } from '@angular/router';
     CardsModule
   ],
   providers: [
-    Web3Service
+    Web3Service,
+    LDAPContractService
   ]
 })
 export class CoreModule { }

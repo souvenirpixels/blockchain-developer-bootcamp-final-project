@@ -42,11 +42,13 @@ contract UDALProtocol is ERC721("Universal Digital Asset Licencing NFT", "UDALNF
   /// @notice The stored information for a given asset
   /// @dev Throws if asset with ID is not valid
   /// @param tokenId Id of the asset
+  /// @return URI of the asset
   /// @return owner of the asset
   /// @return price of the asset in wei
-  function assetInfo (uint256 tokenId) external view returns (address owner, uint256 price) {
+  function assetInfo (uint256 tokenId) external view returns (string memory URI, address owner, uint256 price) {
     require(_exists(tokenId), "assetInfo query for nonexistent tokenId");
-    return (ownerOf(tokenId), _assetInfo[tokenId].price);
+    string memory uri = super.tokenURI(tokenId);
+    return (uri, ownerOf(tokenId), _assetInfo[tokenId].price);
   } 
 
   /// @notice Creates a licence for caller and sends ETH to NFT owner

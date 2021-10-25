@@ -74,6 +74,7 @@ contract("UDALProtocol", function (accounts) {
       // Check values equal what was created
       assert.equal(retAssetInfo.owner, assets[0].owner, "Owner should be correct");
       assert.equal(assets[0].price.eq(retAssetInfo.price), true, "price should be correct");
+      assert.equal(retAssetInfo.URI, assets[0].tokenURI, "TokenURI should be correct");
     });
     it("should revert if tokenId is not valid", async function () {
       await expectRevert(UDALInstance.assetInfo.call(99999), 'assetInfo query for nonexistent tokenId');

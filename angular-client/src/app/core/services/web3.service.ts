@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Observable, Subject} from 'rxjs';
+import {Observable, Subject, ReplaySubject } from 'rxjs';
 declare let require: any;
 const Web3 = require('web3');
 const contract = require('@truffle/contract');
@@ -14,7 +14,7 @@ export class Web3Service {
   private accounts: string[];
   public ready = false;
 
-  public accountsObservable = new Subject<string[]>();
+  public accountsObservable = new ReplaySubject<string[]>();
 
   constructor() {
     /*window.addEventListener('load', (event: any) => {
@@ -23,9 +23,9 @@ export class Web3Service {
   }
 
   public getAcccount(): Observable<string[]>  {
-    setTimeout(()=>{                          
+    /*setTimeout(()=>{                          
       this.accountsObservable.next(this.accounts);
-    }, 1);
+    }, 1);*/
     return this.accountsObservable.asObservable();
   }
 
@@ -50,6 +50,7 @@ export class Web3Service {
 
   public async artifactsToContract(artifacts: any): Promise<any> {
     if (!this.web3) {
+      console.log('Waiting for web3');
       const delay = new Promise(resolve => setTimeout(resolve, 100));
       await delay;
       return await this.artifactsToContract(artifacts);
