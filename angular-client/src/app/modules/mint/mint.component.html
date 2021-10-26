@@ -11,24 +11,19 @@
         <mdb-card-body class="px-lg-5 pt-0">
           <div class="md-form">
             <mdb-icon fas icon="link" class="prefix"></mdb-icon>
-            <input mdbInput type="text" id="PhotoURL" class="form-control">
-            <label for="PhotoURL">Photo URL</label>
+            <input mdbInput type="text" id="photoURL" [(ngModel)]="photoURL" class="form-control">
+            <label for="photoURL">Photo URL</label>
           </div>
 
           <div class="md-form">
             <mdb-icon fas icon="link" class="prefix"></mdb-icon>
-            <input mdbInput type="text" id="MetadataURL" class="form-control">
-            <label for="MetadataURL">Metadata URL</label>
+            <input mdbInput type="text" id="metadataURL" [(ngModel)]="metadataURL" class="form-control">
+            <label for="metadataURL">Metadata URL</label>
           </div>
           <div class="md-form">
             <mdb-icon fab icon="ethereum" class="prefix"></mdb-icon>
-            <input mdbInput type="text" id="Price" class="form-control">
-            <label for="Price">Price</label>
-          </div>
-          <div class="md-form">
-            <mdb-icon fas icon="user" class="prefix"></mdb-icon>
-            <input mdbInput type="text" id="Owner" class="form-control">
-            <label for="Owner">Owner</label>
+            <input mdbInput type="text" id="price" [(ngModel)]="price" class="form-control">
+            <label for="price">Price</label>
           </div>
           <button mdbBtn color="primary" class="z-depth-0 my-4 waves-effect mx-auto d-block" (click)="onMintClick()"  mdbWavesEffect>Mint</button>
             

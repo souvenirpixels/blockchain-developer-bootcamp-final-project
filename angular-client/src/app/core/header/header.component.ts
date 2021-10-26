@@ -13,8 +13,7 @@ export class HeaderComponent implements OnInit {
   }
   
   ngOnInit(): void {
-    console.log('Init Web3Service');
-    this.web3Service.getAcccount().subscribe(resp => {
+    this.web3Service.getDisplayAcccount().subscribe(resp => {
       if (resp && resp[0]) {
         this.connectedAccount = resp[0];
       } else {
@@ -24,6 +23,6 @@ export class HeaderComponent implements OnInit {
   }
 
   onConnectClick() {
-    this.web3Service.bootstrapWeb3();
+    this.web3Service.connectWeb3WithPopup();
   }
 }

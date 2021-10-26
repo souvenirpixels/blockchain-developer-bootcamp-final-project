@@ -10,6 +10,7 @@ import { ButtonsModule,
          CardsModule } from 'angular-bootstrap-md';
 import { RouterModule } from '@angular/router';
 import { LDAPContractService } from './services/ldapcontract.service';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { LDAPContractService } from './services/ldapcontract.service';
     RouterModule,
     WavesModule.forRoot(),
     InputsModule,
-    CardsModule
+    CardsModule,
+    FormsModule
   ],
   exports: [
     HeaderComponent,
@@ -34,7 +36,8 @@ import { LDAPContractService } from './services/ldapcontract.service';
     RouterModule,
     WavesModule,
     InputsModule,
-    CardsModule
+    CardsModule,
+    FormsModule
   ],
   providers: [
     Web3Service,

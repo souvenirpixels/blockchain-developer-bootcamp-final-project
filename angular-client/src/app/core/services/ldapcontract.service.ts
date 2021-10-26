@@ -15,6 +15,7 @@ export class LDAPContractService {
   ldapContractInstance: any;
   private assetListCache: Asset[] = [];
   private assetListSubject: Subject<Asset[]> = new ReplaySubject<Asset[]>();
+  connectedAccount: string;
 
   constructor(private web3Service: Web3Service) {
     this.web3Service.artifactsToContract(LDAP_artifacts).then((LDAPAbstraction) => {
@@ -22,11 +23,22 @@ export class LDAPContractService {
         this.ldapContractInstance = inst;
       });
     });
+    this.web3Service.getAcccount().subscribe(resp => {
+      if (resp && resp[0]) {
+        this.connectedAccount = resp[0];
+      } else {
+        this.connectedAccount = '';
+      } 
+    });
    }
 
-   mint(tokenURI: string, assetURI: string, price: number, owner: string): Promise<Asset> {
-    const trans = this.ldapContractInstance.mint(tokenURI, assetURI, price*100, owner, {from: "0xd3d16f669EAd0Faa13eC9cb92c339Be0919A1549"});
-    return trans;
+   mint(tokenURI: string, assetURI: string, price: number): Promise<Asset> {
+    if (this.connectedAccount) {
+      const trans = this.ldapContractInstance.mint(tokenURI, assetURI, price*100, this.connectedAccount, {from: this.connectedAccount});
+      return trans;  
+    } else {
+      throw new Error('Unabled to mint without connected web3 account');
+    }
     /*
       return this.ldapContractInstance.mint(tokenURI, assetURI, price, owner, (err: any, ev: any) => {
         return new Asset(tokenURI, assetURI, price, owner);
@@ -36,10 +48,11 @@ export class LDAPContractService {
    search(): Observable <Asset[]> {
     this.ldapContractInstance.totalSupply().then((totalSupplyBN: BN) => {
       const totalSupply = totalSupplyBN.toNumber();
+      console.log('totalSupply=', totalSupply);
       this.assetListCache = []; // Blank out cache so can be reloaded
       for (let t=1; t <= totalSupply; ++t) {
         var tBN = new BN(t);
-        this.ldapContractInstance.assetInfo("1").then((a: any) => {
+        this.ldapContractInstance.assetInfo(tBN).then((a: any) => {
           this.assetListCache.push(new Asset(a.URI, '', a.price.toNumber() / 100, a.owner));
           this.assetListSubject.next(this.assetListCache);
         }); 

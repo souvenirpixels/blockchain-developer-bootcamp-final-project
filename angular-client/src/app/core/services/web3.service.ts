@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
-import {Observable, Subject, ReplaySubject } from 'rxjs';
+import {Observable, Subject, ReplaySubject, pipe } from 'rxjs';
+import { map } from 'rxjs/operators'
 declare let require: any;
 const Web3 = require('web3');
 const contract = require('@truffle/contract');
@@ -17,34 +18,45 @@ export class Web3Service {
   public accountsObservable = new ReplaySubject<string[]>();
 
   constructor() {
-    /*window.addEventListener('load', (event: any) => {
-      this.bootstrapWeb3();
-    });*/
+    window.addEventListener('load', (event: any) => {
+      this.checkWeb3NoPopup();
+    });
   }
 
   public getAcccount(): Observable<string[]>  {
-    /*setTimeout(()=>{                          
-      this.accountsObservable.next(this.accounts);
-    }, 1);*/
     return this.accountsObservable.asObservable();
   }
 
-  public bootstrapWeb3() {
-    // Checking if Web3 has been injected by the browser (Mist/MetaMask)
+  public getDisplayAcccount(): Observable<string[]>  {
+    return this.accountsObservable.asObservable().pipe(
+      map((s) => {
+        for (let a=0; a < s.length; ++a) {
+          const l: number = s[a].length;
+          s[a] = s[a].substring(0, 6) + '...' + s[a].substring(l - 4, l); 
+        }
+        return s;
+      })
+    );
+  }
+
+  public connectWeb3WithPopup() {
     if (typeof window.ethereum !== 'undefined') {
-      // Use Mist/MetaMask's provider
       window.ethereum.enable().then(() => {
         this.web3 = new Web3(window.ethereum);
       });
     } else {
-      console.log('No web3? You should consider trying MetaMask!');
-
-      // Hack to provide backwards compatibility for Truffle, which uses web3js 0.20.x
-      Web3.providers.HttpProvider.prototype.sendAsync = Web3.providers.HttpProvider.prototype.send;
-      // fallback - use your fallback strategy (local node / hosted node + in-dapp id mgmt / fail)
-      this.web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8545'));
+      window.alert('Non-Ethereum browser detected. You Should consider using MetaMask!');
     }
+    setInterval(() => this.refreshAccounts(), 100);
+  }
 
+  private checkWeb3NoPopup() {
+    // Checking if Web3 has been injected by the browser (Mist/MetaMask)
+    if (window.ethereum) {
+      this.web3 = new Web3(window.ethereum);
+    } else if (window.web3) {
+      this.web3 = new Web3(window.web3.currentProvider);
+    }
     setInterval(() => this.refreshAccounts(), 100);
   }
 
