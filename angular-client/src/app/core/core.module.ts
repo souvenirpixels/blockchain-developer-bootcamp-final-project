@@ -7,15 +7,19 @@ import { ButtonsModule,
          IconsModule,
          WavesModule,
          InputsModule,
-         CardsModule } from 'angular-bootstrap-md';
+         CardsModule,
+         ModalModule,
+         BadgeModule } from 'angular-bootstrap-md';
 import { RouterModule } from '@angular/router';
 import { LDAPContractService } from './services/ldapcontract.service';
 import { FormsModule } from '@angular/forms';
+import { ConnectedComponent } from './modals/connected/connected.component';
 
 
 @NgModule({
   declarations: [
-    HeaderComponent
+    HeaderComponent,
+    ConnectedComponent
   ],
   imports: [
     CommonModule,
@@ -26,7 +30,9 @@ import { FormsModule } from '@angular/forms';
     WavesModule.forRoot(),
     InputsModule,
     CardsModule,
-    FormsModule
+    FormsModule,
+    ModalModule.forRoot(),
+    BadgeModule
   ],
   exports: [
     HeaderComponent,
@@ -37,7 +43,9 @@ import { FormsModule } from '@angular/forms';
     WavesModule,
     InputsModule,
     CardsModule,
-    FormsModule
+    FormsModule,
+    ModalModule,
+    BadgeModule
   ],
   providers: [
     Web3Service,

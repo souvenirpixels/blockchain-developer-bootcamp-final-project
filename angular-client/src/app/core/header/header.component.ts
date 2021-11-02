@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MDBModalRef, MDBModalService } from 'angular-bootstrap-md';
+import { ConnectedComponent } from '../modals/connected/connected.component';
 import { Web3Service } from '../services/web3.service';
 
 @Component({
@@ -8,8 +10,9 @@ import { Web3Service } from '../services/web3.service';
 })
 export class HeaderComponent implements OnInit {
   connectedAccount: string;
+  modalRef: MDBModalRef;
 
-  constructor(private web3Service: Web3Service) {
+  constructor(private web3Service: Web3Service, private modalService: MDBModalService) {
   }
   
   ngOnInit(): void {
@@ -24,5 +27,19 @@ export class HeaderComponent implements OnInit {
 
   onConnectClick() {
     this.web3Service.connectWeb3WithPopup();
+
+    let modalOptions = {
+      backdrop: true,
+      keyboard: true,
+      focus: true,
+      show: false,
+      ignoreBackdropClick: true,
+      class: 'modal-lg',
+      containerClass: '',
+      animated: true,
+      data: { email: '' }
+    }
+
+    this.modalRef = this.modalService.show(ConnectedComponent, modalOptions);    
   }
 }

@@ -1,0 +1,13 @@
+<div class="modal-content">
+    <div class="modal-header text-center">
+      <h4 class="modal-title w-100 font-weight-bold">Account Connected</h4>
+    </div>
+
+    <div class="modal-body mx-3">
+      <h4>Address: <mdb-badge [pill]="true" [primary]="true">{{connectedAccount}}</mdb-badge></h4>
+      
+    </div>
+    <div class="modal-footer">
+      <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="modalRef.hide()" aria-label="Close"  mdbWavesEffect>Close</button>
+    </div>
+  </div>
