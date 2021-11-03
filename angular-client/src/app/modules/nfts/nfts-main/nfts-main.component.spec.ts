@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LicenceComponent } from './licence.component';
+import { NftsMainComponent } from './nfts-main.component';
 
-describe('LicenceComponent', () => {
-  let component: LicenceComponent;
-  let fixture: ComponentFixture<LicenceComponent>;
+describe('NftsMainComponent', () => {
+  let component: NftsMainComponent;
+  let fixture: ComponentFixture<NftsMainComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ LicenceComponent ]
+      declarations: [ NftsMainComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LicenceComponent);
+    fixture = TestBed.createComponent(NftsMainComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

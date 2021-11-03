@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { LDAPContractService } from 'src/app/core/services/ldapcontract.service';
 
 @Component({
-  selector: 'app-mint',
-  templateUrl: './mint.component.html',
-  styleUrls: ['./mint.component.scss']
+  selector: 'app-mint-main',
+  templateUrl: './mint-main.component.html',
+  styleUrls: ['./mint-main.component.scss']
 })
-export class MintComponent implements OnInit {
+export class MintMainComponent implements OnInit {
+
   photoURL: string;
   metadataURL: string;
   price: number;

@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NftsComponent } from './nfts.component';
+import { AssetCardComponent } from './asset-card.component';
 
-describe('NftsComponent', () => {
-  let component: NftsComponent;
-  let fixture: ComponentFixture<NftsComponent>;
+describe('AssetCardComponent', () => {
+  let component: AssetCardComponent;
+  let fixture: ComponentFixture<AssetCardComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ NftsComponent ]
+      declarations: [ AssetCardComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NftsComponent);
+    fixture = TestBed.createComponent(AssetCardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

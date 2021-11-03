@@ -4,11 +4,11 @@ import { Asset } from 'src/app/core/models/asset.model';
 import { LDAPContractService } from 'src/app/core/services/ldapcontract.service';
 
 @Component({
-  selector: 'app-licence',
-  templateUrl: './licence.component.html',
-  styleUrls: ['./licence.component.scss']
+  selector: 'app-licence-main',
+  templateUrl: './licence-main.component.html',
+  styleUrls: ['./licence-main.component.scss']
 })
-export class LicenceComponent implements OnInit {
+export class LicenceMainComponent implements OnInit {
   assetList: Asset[];
   assetListString: String;
 
@@ -16,6 +16,8 @@ export class LicenceComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
+  // TODO NEXT: FIX THE DISPLAY TO WORK PROPERLY
 
   onSearchClick() {
     this.ldapContractService.search().subscribe((response) =>{
