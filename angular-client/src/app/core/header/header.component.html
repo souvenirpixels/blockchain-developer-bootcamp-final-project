@@ -19,8 +19,8 @@
       <!-- Links -->
   
       <ul class="navbar-nav ml-auto">
-            <button *ngIf="!connectedAccount" mdbBtn type="button" size="sm" color="white" (click)="onConnectClick()" class="font-weight-bold" mdbWavesEffect>Connect Wallet</button>
-            <button *ngIf="connectedAccount" mdbBtn type="button" size="sm" color="white" (click)="onConnectClick()" class="font-weight-bold" mdbWavesEffect>{{connectedAccount}}</button>
+            <button *ngIf="!connectedAccount" mdbBtn type="button" size="sm" color="white" (click)="onConnectClickNotConnected" class="font-weight-bold" mdbWavesEffect>Connect Wallet</button>
+            <button *ngIf="connectedAccount" mdbBtn type="button" size="sm" color="white" (click)="onConnectClickPopup()" class="font-weight-bold" mdbWavesEffect>{{connectedAccount}}</button>
       </ul>
     </links>
     <!-- Collapsible content -->

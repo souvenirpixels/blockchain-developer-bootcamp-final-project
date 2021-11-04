@@ -25,10 +25,8 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  onConnectClick() {
-    this.web3Service.connectWeb3WithPopup();
-
-    let modalOptions = {
+  onConnectClickPopup() {
+      let modalOptions = {
       backdrop: true,
       keyboard: true,
       focus: true,
@@ -41,5 +39,9 @@ export class HeaderComponent implements OnInit {
     }
 
     this.modalRef = this.modalService.show(ConnectedComponent, modalOptions);    
+  }
+
+  onConnectClickNotConnected() {
+    this.web3Service.connectWeb3WithPopup();
   }
 }

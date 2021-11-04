@@ -1,0 +1,37 @@
+{
+    "name": "Moraine Lake Sunrise",
+    "description": "One of the most beautiful (and photographed) lakes in Canada, Moraine Lake.", 
+    "external_url": "https://www.souvenirpixels.com/James-wheeler-portfolio/i-bwQmQXt/A", 
+    "image": "ipfs://QmRAv59S1472S6r9zueNrDbf4qTqFYnhSCoocj7wnSXJ1j", 
+    "properties": 
+      {
+        "Keywords": {
+              "type": "string",
+              "description": "alberta, aqua, banff, beautiful, blue, calm, canada, canadian, clouds, colorful, lake, landscape, moraine, morning, mountains, nature, peaceful, peaks, reflection, rockies, rocky, scenic, sunrise, tranquil, travel, turquoise, vivid, outdoor, tourism, hiking, serenity, emerald, pristine, lake louise, amazing, hdr"
+        },
+        "Creation Date": {
+              "type": "string",
+              "description": "2021-11-04T03:55:30Z"
+        },
+        "Type": {
+              "type": "string",
+              "description": "Photo"
+        },
+        "Pixel Height": {
+              "type": "number",
+              "description": "2847"
+        },
+        "Pixel Width": {
+              "type": "number",
+              "description": "4226"
+        },
+        "Usage": {
+              "type": "string",
+              "description": "Commercial"
+        },
+        "Number of People": {
+              "type": "number",
+              "description": "0"
+        }
+      }
+  }  

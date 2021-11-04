@@ -40,86 +40,66 @@ Each of these primary properties will be used be used to display the image on st
 In addition to these primary properties, it is strongly recommended that these optional properties are included in the "properties" section, for example:
 
 ```
-  "name": "Moraine Lake Sunrise",
-  "description": "One of the most beautiful (and photographed) lakes in Canada, Moraine Lake.", 
-  "external_url": "https://www.souvenirpixels.com/James-wheeler-portfolio/i-bwQmQXt/A", 
-  "image": "https://photos.smugmug.com/Photo-blog/i-bwQmQXt/1/c77946e4/XL/2012-07-31%20051814%20-%20Moraine%20Lake%20Sunrise-XL.jpg", 
-  "properties": [ 
-    {
-      "Keywords": {
-            "type": "string",
-            "description": ""
-      },
-      "Category": {
-            "type": "string",
-            "description": ""
-      },
-      "Creation Date": {
-            "type": "string",
-            "description": ""
-      },
-      "Location City": {
-            "type": "string",
-            "description": ""
-      },
-      "Location State/Province": {
-            "type": "string",
-            "description": ""
-      },
-      "Location Country": {
-            "type": "string",
-            "description": ""
-      },
-      "Media Type": {
-            "type": "string",
-            "description": ""
-      },
-      "Number of People": {
-            "type": "number",
-            "description": ""
-      },
-      "People": {
-            "type": "string",
-            "description": ""
-      },
-      "People Genders": {
-            "type": "string",
-            "description": ""
-      },
-      "Pixel Height": {
-            "type": "string",
-            "description": ""
-      },
-      "Pixel Width": {
-            "type": "string",
-            "description": ""
-      },
-      "Usage": {
-            "type": "string",
-            "description": "Commercial"
+{
+    "name": "Moraine Lake Sunrise",
+    "description": "One of the most beautiful (and photographed) lakes in Canada, Moraine Lake.", 
+    "external_url": "https://www.souvenirpixels.com/James-wheeler-portfolio/i-bwQmQXt/A", 
+    "image": "ipfs://QmRAv59S1472S6r9zueNrDbf4qTqFYnhSCoocj7wnSXJ1j", 
+    "properties": 
+      {
+        "Keywords": {
+              "type": "string",
+              "description": "alberta, aqua, banff, beautiful, blue, calm, canada, canadian, clouds, colorful, lake, landscape, moraine, morning, mountains, nature, peaceful, peaks, reflection, rockies, rocky, scenic, sunrise, tranquil, travel, turquoise, vivid, outdoor, tourism, hiking, serenity, emerald, pristine, lake louise, amazing, hdr"
+        },
+        "Creation Date": {
+              "type": "string",
+              "description": "2021-11-04T03:55:30Z"
+        },
+        "Type": {
+              "type": "string",
+              "description": "Photo"
+        },
+        "Pixel Height": {
+              "type": "number",
+              "description": "2847"
+        },
+        "Pixel Width": {
+              "type": "number",
+              "description": "4226"
+        },
+        "Usage": {
+              "type": "string",
+              "description": "Commercial"
+        },
+        "Number of People": {
+              "type": "number",
+              "description": "0"
+        }
       }
-    }
-   ], 
-```
+  }  
+  ```
 
 These properties will be used by search engines so including them in the proper format will increase your sales of licences.
 
 | Property Name | Notes |
 | ------------- | ----------- |
-| Keywords |  |
-| Category |  |
-| Creation Date |  |
-| Location City |  |
-|  |  |
-|  |  |
-|  |  |
-|  |  |
-|  |  |
-|  |  |
-|  |  |
+| Keywords | All keywords describing the file, separated by commas.  Only the first 50 will be used for search engines. |
+|  | Creation date time in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601). 
+| Type | Must be Photo, Vector, Footage, Music, Template, or 3D Model |
+| Pixel Height | Height of the asset. Only used for photo and footage. |
+| Pixel Width | Width of the asset. Only used for photo and footage. |
+| Usage | Commercial or Editorial.  Commercial usages must have applicable model and property releases available. |
+| Number of People | Typically used for photos and footage, buyers can filter buy number of people they are looking for.  |
 
+### Storage Options
 
+Asset file and metadata JSON files are stored offchain in one of the following options
 
+1. Web2 URL - Standard web URL, including http or https
+2. [IPFS](https://ipfs.io/) - Format should be ipfs://<hash>. For example, ipfs://QmWnQHrg2HeYq9ZGMVk16YH6NzzZubKfZEPEUSvuoj2NXw
+3. [ARWeave](https://www.arweave.org/) - Format should be ar://<hash>. For example, ar://CWaRlnQ4oMZbV1hupldUr_90Toax4Tv2J2xGdGF0UjE
+
+### Mint Workflow
 
 1. Creator uploads a asset file (photo, video, etc) to [IPFS](https://ipfs.io/).
 2. Creator uploads a metadata JSON file to [IPFS](https://ipfs.io/).
