@@ -3,35 +3,63 @@
     "description": "One of the most beautiful (and photographed) lakes in Canada, Moraine Lake.", 
     "external_url": "https://www.souvenirpixels.com/James-wheeler-portfolio/i-bwQmQXt/A", 
     "image": "ipfs://QmRAv59S1472S6r9zueNrDbf4qTqFYnhSCoocj7wnSXJ1j", 
+    "animation_url": "",
+    "ldap_metadata_version": "0.1",
+    "sizes": {
+      "image_120px": "ipfs://QmRAv59S1472S6r9zueNrDbf4qTqFYnhSCoocj7wnSXJ1j",
+      "image_240px": "ipfs://QmRAv59S1472S6r9zueNrDbf4qTqFYnhSCoocj7wnSXJ1j",
+      "image_480px": "ipfs://QmRAv59S1472S6r9zueNrDbf4qTqFYnhSCoocj7wnSXJ1j",
+      "image_960px": "ipfs://QmRAv59S1472S6r9zueNrDbf4qTqFYnhSCoocj7wnSXJ1j",
+      "image_1920px": "ipfs://QmRAv59S1472S6r9zueNrDbf4qTqFYnhSCoocj7wnSXJ1j",
+      "image_3840px": "ipfs://QmRAv59S1472S6r9zueNrDbf4qTqFYnhSCoocj7wnSXJ1j",
+      "animation_url_120px": "ipfs://QmRAv59S1472S6r9zueNrDbf4qTqFYnhSCoocj7wnSXJ1j",
+      "animation_url_240px": "ipfs://QmRAv59S1472S6r9zueNrDbf4qTqFYnhSCoocj7wnSXJ1j",
+      "animation_url_480px": "ipfs://QmRAv59S1472S6r9zueNrDbf4qTqFYnhSCoocj7wnSXJ1j",
+      "animation_url_960px": "ipfs://QmRAv59S1472S6r9zueNrDbf4qTqFYnhSCoocj7wnSXJ1j",
+      "animation_url_1920px": "ipfs://QmRAv59S1472S6r9zueNrDbf4qTqFYnhSCoocj7wnSXJ1j",
+      "animation_url_3840px": "ipfs://QmRAv59S1472S6r9zueNrDbf4qTqFYnhSCoocj7wnSXJ1j"
+    },
     "properties": 
       {
-        "Keywords": {
-              "type": "string",
-              "description": "alberta, aqua, banff, beautiful, blue, calm, canada, canadian, clouds, colorful, lake, landscape, moraine, morning, mountains, nature, peaceful, peaks, reflection, rockies, rocky, scenic, sunrise, tranquil, travel, turquoise, vivid, outdoor, tourism, hiking, serenity, emerald, pristine, lake louise, amazing, hdr"
+        "keywords": {
+            "name": "Keywords",
+            "display_type": "array",
+            "value": ["alberta", "aqua", "banff", "beautiful", "blue", "calm", "canada",
+                        "canadian", "clouds", "colorful", "lake", "landscape", "moraine", 
+                        "morning", "mountains", "nature", "peaceful", "peaks", "reflection", 
+                        "rockies", "rocky", "scenic", "sunrise", "tranquil", "travel", 
+                        "turquoise", "vivid", "outdoor", "tourism", "hiking", "serenity", 
+                        "emerald", "pristine", "lake louise", "amazing", "hdr"]
         },
-        "Creation Date": {
-              "type": "string",
-              "description": "2021-11-04T03:55:30Z"
+        "creation_date": {
+            "name": "Creation Date",
+            "display_type": "date",
+            "value": "2021-11-04T03:55:30Z"
         },
-        "Type": {
-              "type": "string",
-              "description": "Photo"
+        "asset_type": {
+            "name": "Type",
+            "display_type": "string",
+            "value": "Photo"
         },
-        "Pixel Height": {
-              "type": "number",
-              "description": "2847"
+        "pixel_height": {
+            "name": "Pixel Height",
+            "display_type": "number",
+            "value": "2847"
         },
-        "Pixel Width": {
-              "type": "number",
-              "description": "4226"
+        "pixel_width": {
+            "name": "Pixel Width",   
+            "display_type": "number",
+            "value": "4226"
         },
-        "Usage": {
-              "type": "string",
-              "description": "Commercial"
+        "usage": {
+            "name": "Usage",
+            "display_type": "string",
+            "value": "Commercial"
         },
-        "Number of People": {
-              "type": "number",
-              "description": "0"
+        "number_of_people": {
+            "name": "Number of People",
+            "display_type": "number",
+            "value": "0"
         }
       }
   }  
