@@ -53,7 +53,7 @@ export class LDAPContractService {
       for (let t=1; t <= totalSupply; ++t) {
         var tBN = new BN(t);
         this.ldapContractInstance.assetInfo(tBN).then((a: any) => {
-          this.assetListCache.push(new Asset(a.URI, '', a.price.toNumber() / 100, a.owner));
+          this.assetListCache.push(new Asset(a.URI, '', a.price.toNumber() / 100, a.owner, t));
           this.assetListSubject.next(this.assetListCache);
         }); 
       }

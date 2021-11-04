@@ -12,7 +12,115 @@ Licencing stock assets can be done more efficiently using blockchain technology.
 
 Creators should be able to list assets for sale.
 
-### Workflow
+## Minting Licencable NFTs
+
+To mint a licencable NFT the photographer must register the photo for sale.  Three data points are required to licence
+
+### Token URI
+The token URI contains all information about the photo for sale and is a JSON file in the format of the the [official ERC721 metadata standard](https://eips.ethereum.org/EIPS/eip-721#specification) with the [ERC1155 metadata suggestions](https://eips.ethereum.org/EIPS/eip-1155#metadata).  This format is supported by many NFT marketplaces including the popular [Opensea market](https://docs.opensea.io/docs/metadata-standards).
+
+Here is an example of the base metadata
+```
+{
+  "name": "Moraine Lake Sunrise",
+  "description": "One of the most beautiful (and photographed) lakes in Canada, Moraine Lake.", 
+  "external_url": "https://www.souvenirpixels.com/James-wheeler-portfolio/i-bwQmQXt/A", 
+  "image": "https://photos.smugmug.com/Photo-blog/i-bwQmQXt/1/c77946e4/XL/2012-07-31%20051814%20-%20Moraine%20Lake%20Sunrise-XL.jpg", 
+  "properties": [ ... ], 
+}
+```
+Each of these primary properties will be used be used to display the image on stock licencing sites.
+| Property Name | Notes |
+| ------------- | ----------- |
+| Name | This is the name of the asset, will often be used as a title and for SEO |
+| Description | Will be shown accompanying the image |
+| external_url | This is a link to a page where the photo can be licences.  Most marketplaces won't support licencable NFTs initially but many will provide this link buyers.  So, this should be a direct link to a photo that support licencable NFTs |
+| Image | This is the image that will be displayed to the buyer.  This can be copywrited for the photographers protection if needed. |
+
+In addition to these primary properties, it is strongly recommended that these optional properties are included in the "properties" section, for example:
+
+```
+  "name": "Moraine Lake Sunrise",
+  "description": "One of the most beautiful (and photographed) lakes in Canada, Moraine Lake.", 
+  "external_url": "https://www.souvenirpixels.com/James-wheeler-portfolio/i-bwQmQXt/A", 
+  "image": "https://photos.smugmug.com/Photo-blog/i-bwQmQXt/1/c77946e4/XL/2012-07-31%20051814%20-%20Moraine%20Lake%20Sunrise-XL.jpg", 
+  "properties": [ 
+    {
+      "Keywords": {
+            "type": "string",
+            "description": ""
+      },
+      "Category": {
+            "type": "string",
+            "description": ""
+      },
+      "Creation Date": {
+            "type": "string",
+            "description": ""
+      },
+      "Location City": {
+            "type": "string",
+            "description": ""
+      },
+      "Location State/Province": {
+            "type": "string",
+            "description": ""
+      },
+      "Location Country": {
+            "type": "string",
+            "description": ""
+      },
+      "Media Type": {
+            "type": "string",
+            "description": ""
+      },
+      "Number of People": {
+            "type": "number",
+            "description": ""
+      },
+      "People": {
+            "type": "string",
+            "description": ""
+      },
+      "People Genders": {
+            "type": "string",
+            "description": ""
+      },
+      "Pixel Height": {
+            "type": "string",
+            "description": ""
+      },
+      "Pixel Width": {
+            "type": "string",
+            "description": ""
+      },
+      "Usage": {
+            "type": "string",
+            "description": "Commercial"
+      }
+    }
+   ], 
+```
+
+These properties will be used by search engines so including them in the proper format will increase your sales of licences.
+
+| Property Name | Notes |
+| ------------- | ----------- |
+| Keywords |  |
+| Category |  |
+| Creation Date |  |
+| Location City |  |
+|  |  |
+|  |  |
+|  |  |
+|  |  |
+|  |  |
+|  |  |
+|  |  |
+
+
+
+
 1. Creator uploads a asset file (photo, video, etc) to [IPFS](https://ipfs.io/).
 2. Creator uploads a metadata JSON file to [IPFS](https://ipfs.io/).
 3. Creator interacts with smart contract to register the photo for sale.  The Creator provides the following information:
@@ -69,6 +177,12 @@ Licencor should be able to purchase a licence to use the file commercially
 
 ## Future Roadmap
 The following features may be added to project depending based on time available before due date.
+1. Add a contractURI method to be used by [Opensea](https://docs.opensea.io/docs/contract-level-metadata)
+```
+    function contractURI() public view returns (string memory) {
+        return "https://metadata-url.com/my-metadata";
+    }
+```
 1. Decide on a standard for how metadata is stored that is compatible with the ERC721 Metadata JSON Schema standard
 1. Circuit breaker to stop use of contract if bugs (Pauser), use access control to only allow those with access to pause.
 1. Change the licence to be an ERC1155 NFT token
