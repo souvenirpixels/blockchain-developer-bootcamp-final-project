@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { Web3Service } from './web3.service';
 import { Asset } from '../models/asset.model';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 import BN from 'bn.js';
+import { map } from 'rxjs/operators';
 
 
 declare let require: any;
@@ -17,7 +19,7 @@ export class LDAPContractService {
   private assetListSubject: Subject<Asset[]> = new ReplaySubject<Asset[]>();
   connectedAccount: string;
 
-  constructor(private web3Service: Web3Service) {
+  constructor(private web3Service: Web3Service, private http: HttpClient) {
     this.web3Service.artifactsToContract(LDAP_artifacts).then((LDAPAbstraction) => {
       LDAPAbstraction.deployed().then((inst: any) => {
         this.ldapContractInstance = inst;
@@ -39,10 +41,6 @@ export class LDAPContractService {
     } else {
       throw new Error('Unabled to mint without connected web3 account');
     }
-    /*
-      return this.ldapContractInstance.mint(tokenURI, assetURI, price, owner, (err: any, ev: any) => {
-        return new Asset(tokenURI, assetURI, price, owner);
-      });*/
    }
   
    search(): Observable <Asset[]> {
@@ -55,6 +53,13 @@ export class LDAPContractService {
         this.ldapContractInstance.assetInfo(tBN).then((a: any) => {
           this.assetListCache.push(new Asset(a.URI, '', a.price.toNumber() / 100, a.owner, t));
           this.assetListSubject.next(this.assetListCache);
+          this.http.get(a.URI)
+          .pipe(map(response => {
+              console.log('Response=', response);
+          })).subscribe(
+            data => console.log('success', data),
+            error => console.log('oops', error)
+          );  
         }); 
       }
     });

@@ -1,3 +1,4 @@
+
 export class Asset {
     id?: number;
     tokenURI: string;

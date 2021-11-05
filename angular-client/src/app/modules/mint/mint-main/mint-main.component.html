@@ -9,6 +9,9 @@
           </h3>
         </mdb-card-header>
         <mdb-card-body class="px-lg-5 pt-0">
+          <div *ngIf="errorMessage" class="alert alert-danger mt-2" role="alert">
+            {{errorMessage }}
+          </div>
           <div class="md-form">
             <mdb-icon fas icon="link" class="prefix"></mdb-icon>
             <input mdbInput type="text" id="photoURL" [(ngModel)]="photoURL" class="form-control">

@@ -14,6 +14,7 @@ import { RouterModule } from '@angular/router';
 import { LDAPContractService } from './services/ldapcontract.service';
 import { FormsModule } from '@angular/forms';
 import { ConnectedComponent } from './modals/connected/connected.component';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import { ConnectedComponent } from './modals/connected/connected.component';
     CardsModule,
     FormsModule,
     ModalModule.forRoot(),
-    BadgeModule
+    BadgeModule,
+    HttpClientModule
   ],
   exports: [
     HeaderComponent,
