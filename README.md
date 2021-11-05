@@ -8,6 +8,29 @@ The stock asset industry is an oligopoly controlled by a small number of agencie
 ## Solution
 Licencing stock assets can be done more efficiently using blockchain technology.  This project will disintermediate existing stock agencies by using an NFT to sell digital use licenses directly from stock creators to buyers.
 
+## Getting Started
+
+### Smart contracts
+First setup a local ganache system with [Ganache GUI](https://www.trufflesuite.com/ganache) and install [Truffle](https://github.com/trufflesuite/truffle) globally.
+
+Run the following commands to deploy contracts to local ganache instance and tests.
+```
+git clone https://github.com/souvenirpixels/blockchain-developer-bootcamp-final-project.git
+cd blockchain-developer-bootcamp-final-project
+npm install
+truffle compile
+truffle migrate
+truffle test
+```
+
+### Angular UI
+To run the angular UI locally (http://localhost:4200/), navigate to the angular-client directory then run the following commands.
+
+```
+npm install
+ng serve -o
+```
+
 ## Stock Asset Registration Workflow
 
 Creators should be able to list assets for sale.
@@ -94,14 +117,3 @@ The following features may be added to project depending based on time available
 1. Volume discounts for purchasing many assets via an ERC20 token.
 1. Ability to purchase different types of licences (standard vs extended, etc)
 1. Ability to check if assetURI is a valid file before purchase
-
-## Getting Started
-Requires [Truffle](https://github.com/trufflesuite/truffle) and [Ganache GUI](https://www.trufflesuite.com/ganache) installed. 
-
-Then run the following commands
-```
-npm install
-truffle compile
-truffle migrate
-truffle test
-```
