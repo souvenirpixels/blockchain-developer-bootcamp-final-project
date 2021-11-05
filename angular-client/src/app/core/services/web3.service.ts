@@ -43,6 +43,8 @@ export class Web3Service {
     if (typeof window.ethereum !== 'undefined') {
       window.ethereum.enable().then(() => {
         this.web3 = new Web3(window.ethereum);
+      }).catch((e: any) => {
+        console.log('Error connecting to Web3', e);
       });
     } else {
       window.alert('Non-Ethereum browser detected. You Should consider using MetaMask!');
