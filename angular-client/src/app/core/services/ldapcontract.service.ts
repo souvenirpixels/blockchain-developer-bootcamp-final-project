@@ -51,14 +51,27 @@ export class LDAPContractService {
       for (let t=1; t <= totalSupply; ++t) {
         var tBN = new BN(t);
         this.ldapContractInstance.assetInfo(tBN).then((a: any) => {
-          this.assetListCache.push(new Asset(a.URI, '', a.price.toNumber() / 100, a.owner, t));
-          this.assetListSubject.next(this.assetListCache);
-          this.http.get(a.URI)
+          let newAsset: Asset = new Asset(a.URI, '', a.price.toNumber() / 100, a.owner, t);
+          
+          this.http.get<Asset>(a.URI)
           .pipe(map(response => {
               console.log('Response=', response);
+              console.log('Data=', response);
+              newAsset.tokenURIData = response;
+              this.assetListCache.push(newAsset);
+              this.assetListSubject.next(this.assetListCache);
           })).subscribe(
-            data => console.log('success', data),
-            error => console.log('oops', error)
+            data => { },
+            error => {
+              if (error.message) {
+                newAsset.errorMessage = error.message;
+              } else {
+                newAsset.errorMessage = error;
+              }
+              console.log('Error=', newAsset.errorMessage);
+              this.assetListCache.push(newAsset);
+              this.assetListSubject.next(this.assetListCache);
+            }
           );  
         }); 
       }

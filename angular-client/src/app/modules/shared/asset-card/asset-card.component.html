@@ -1,7 +1,7 @@
 
 <mdb-card>
     <!--Card image-->
-    <mdb-card-img src="https://mdbootstrap.com/img/Photos/Lightbox/Thumbnail/img%20(97).jpg" alt="Card image cap"></mdb-card-img>
+    <mdb-card-img src="{{ asset.getImageURL() }}" alt="Card image cap"></mdb-card-img>
     <!--Card content-->
     <mdb-card-body>
   
@@ -15,7 +15,8 @@
         <p>Id={{ asset.id }}</p>
         <p>tokenURI={{ asset.tokenURI }}</p>
         <p>price={{ asset.price }}</p>
-        <p>owner={{ asset.owner }}</p>
+        <p>tokenURIData={{ asset.tokenURIData }}</p>
+        <p>errorMessager={{ asset.errorMessage }}</p>
       </mdb-card-text>
   
       <a href="#" mdbBtn color="primary" mdbWavesEffect>Buy</a>

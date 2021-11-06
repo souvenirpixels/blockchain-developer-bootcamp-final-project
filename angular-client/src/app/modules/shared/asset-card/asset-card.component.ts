@@ -11,6 +11,7 @@ export class AssetCardComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    
   }
 
 }
