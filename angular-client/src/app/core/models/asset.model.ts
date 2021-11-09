@@ -1,3 +1,9 @@
+export enum PhotoSizeEnum {
+    THUMBNAIL = 1,
+    SMALL = 2,
+    MEDIUM = 3
+}
+
 export class Asset {
     id?: number;
     tokenURI: string;
@@ -6,6 +12,25 @@ export class Asset {
     owner: string;
     errorMessage: string;
     tokenURIData: any;
+    name: string;
+    description: string;
+    external_url: string;
+    private image: string;
+    private sizes: any;
+    animation_url: string;
+    ldap_metadata_version: string;
+    Keywords: string;
+    creation_date: Date;
+    asset_type: string;
+    pixel_height: number;
+    pixel_width: number;
+    usage: string;
+    number_of_people: number;
+
+    getPhotoSrc(size: PhotoSizeEnum): string {
+        return '';
+    }
+
     setTokenURIData(tokenURIData: any) {
 
     }
@@ -13,7 +38,7 @@ export class Asset {
         let imageURI: string;
         let retVal: string = '';
         let validPrefixes = ["http", "https", "ipfs", "ar"];
-        
+        console.log('I am here');
         if (!this.tokenURIData) {
             throw new Error('tokenURIData does not exist');
         } else if (!this.tokenURIData.image) {
