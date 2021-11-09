@@ -45,4 +45,4 @@ testem.log
 Thumbs.db
 
 # migrated contracts
-/src/app/contracts/*
+/src/app/contracts
