@@ -38,11 +38,12 @@ export class LDAPContractService {
     return new Promise((resolve, reject) => {
       if (this.connectedAccount) {
         this.ldapContractInstance.mint(tokenURI, assetURI, price*100, this.connectedAccount, {from: this.connectedAccount}).then((ret:any) => {
+          this.web3Service.getTransaction(ret.tx);
+          console.log('ret=', ret);
           resolve(ret);
         }).catch((e:any) => {
           reject(e);
         });
-        
       } else {
         reject('Connect metamask to mint.');
       }
