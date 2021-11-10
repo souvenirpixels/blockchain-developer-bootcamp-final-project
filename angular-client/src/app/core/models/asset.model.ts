@@ -65,11 +65,13 @@ export class Asset {
         this.number_of_people = tokenURIData.number_of_people;
     }
 
-    constructor(tokenURI: string, assetURI: string, price: number, owner: string, id?: number){
+    constructor(tokenURI: string, assetURI: string, price: number, owner?: string, id?: number){
         this.tokenURI = tokenURI;
         this.assetURI = assetURI;
         this.price = price;
-        this.owner = owner;
+        if (owner) {
+            this.owner = owner;
+        }
         if (id) {
             this.id = id;
         }

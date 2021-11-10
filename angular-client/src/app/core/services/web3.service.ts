@@ -42,20 +42,12 @@ export class Web3Service {
         this.accountsObservable.next(accs);
         this.accounts = accs;
       }
-
-      // check this out https://www.coinclarified.com/p/3-ways-to-subscribe-to-events-with-web3-js/
-      var subscription = this.web3.eth.subscribe('logs', function(error: any, result: any) {
-        console.log('result=', result);
-      }).on("data", function(transaction: any){
-          console.log("transaction=", transaction);
-      });
     });
 
 
     window.ethereum.on('accountsChanged', (accounts: any) => {
       this.accounts = accounts;
       this.accountsObservable.next(accounts);
-      console.log('accounts changed', accounts);
     });
   }
 
@@ -75,11 +67,11 @@ export class Web3Service {
     }
   }
 
-  public getTransaction(transId: string) {
+  /*public getTransaction(transId: string) {
     this.web3.eth.getTransaction(transId, (err: any, result: any) => {
       console.log('Transaction returned', err, result);
     });
-  }
+  }*/
 
   public async artifactsToContract(artifacts: any): Promise<any> {
     if (!this.web3) {

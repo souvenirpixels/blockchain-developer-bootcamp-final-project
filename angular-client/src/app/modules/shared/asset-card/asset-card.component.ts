@@ -21,7 +21,6 @@ export class AssetCardComponent implements OnInit {
       console.log('Error getting photo src:', e);
       this.errorMessage = 'Invalid Image URL';
     }
-    
   }
 
 }

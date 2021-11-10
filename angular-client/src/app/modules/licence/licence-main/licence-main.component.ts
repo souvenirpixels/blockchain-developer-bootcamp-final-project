@@ -17,8 +17,6 @@ export class LicenceMainComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  // TODO NEXT: FIX THE DISPLAY TO WORK PROPERLY
-
   onSearchClick() {
     this.ldapContractService.search().subscribe((response) =>{
       this.assetList = response;
