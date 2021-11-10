@@ -1,0 +1,58 @@
+{
+    "name": "Amazing Sea Stacks",
+    "description": "San Josef Bay on Vancouver Island, British Columbia sea stacks at low tide.  ", 
+    "external_url": "", 
+    "image": "https://cdn.filestackcontent.com/resize=w:960/2pm1Hy8LTheFvZvzloUo", 
+    "ldap_metadata_version": "0.1",
+    "sizes": {
+      "image_120px": "https://cdn.filestackcontent.com/resize=w:120/2pm1Hy8LTheFvZvzloUo",
+      "image_240px": "https://cdn.filestackcontent.com/resize=w:240/2pm1Hy8LTheFvZvzloUo",
+      "image_480px": "https://cdn.filestackcontent.com/resize=w:480/2pm1Hy8LTheFvZvzloUo",
+      "image_960px": "https://cdn.filestackcontent.com/resize=w:960/2pm1Hy8LTheFvZvzloUo",
+      "image_1920px": "https://cdn.filestackcontent.com/resize=w:1920/2pm1Hy8LTheFvZvzloUo",
+      "image_3840px": "https://cdn.filestackcontent.com/resize=w:3840/2pm1Hy8LTheFvZvzloUo"
+    },
+    "properties": 
+      {
+        "keywords": {
+            "name": "Keywords",
+            "display_type": "array",
+            "value": ["alberta", "jasper", "canadaclouds", "falls", "waterfall", "sunwapta falls", 
+                "sunwapta", "nature", "water", "river", "landscape", "tree", "sky", "lake", "mountain", 
+                "outdoors", "plant", "forest", "dramatic", "joining", "connect", "merge", "amalgamate", 
+                "consolidate", "combine", "bond", "unite", "stream", "creek", "wilderness", "cloud", 
+                "rock", "no person", "outdoor", "natural landscape", "wood", "travel", "rocky", "water resources", 
+                "sunset", "trees", "pine", "rapid"]            
+        },
+        "creation_date": {
+            "name": "Creation Date",
+            "display_type": "date",
+            "value": "2021-08-31T04:45:50Z"
+        },
+        "asset_type": {
+            "name": "Type",
+            "display_type": "string",
+            "value": "Photo"
+        },
+        "pixel_height": {
+            "name": "Pixel Height",
+            "display_type": "number",
+            "value": "4575"
+        },
+        "pixel_width": {
+            "name": "Pixel Width",   
+            "display_type": "number",
+            "value": "8133"
+        },
+        "usage": {
+            "name": "Usage",
+            "display_type": "string",
+            "value": "Commercial"
+        },
+        "number_of_people": {
+            "name": "Number of People",
+            "display_type": "number",
+            "value": "0"
+        }
+      }
+}  

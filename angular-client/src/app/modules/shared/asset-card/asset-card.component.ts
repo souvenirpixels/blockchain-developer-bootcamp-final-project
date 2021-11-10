@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Asset } from 'src/app/core/models/asset.model';
+import { Asset, PhotoSizeEnum } from 'src/app/core/models/asset.model';
 
 @Component({
   selector: 'app-asset-card',
@@ -8,9 +8,19 @@ import { Asset } from 'src/app/core/models/asset.model';
 })
 export class AssetCardComponent implements OnInit {
   @Input() asset: Asset;
+  imageURL: string;
+  errorMessage: string;
+  photoSizeEnum = PhotoSizeEnum;
+  
   constructor() { }
 
   ngOnInit(): void {
+    try {
+      this.imageURL = this.asset.getPhotoSrc(this.photoSizeEnum.MEDIUM);
+    } catch (e) {
+      console.log('Error getting photo src:', e);
+      this.errorMessage = 'Invalid Image URL';
+    }
     
   }
 

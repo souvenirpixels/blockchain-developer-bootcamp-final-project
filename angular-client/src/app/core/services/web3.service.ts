@@ -13,56 +13,62 @@ declare let window: any;
 export class Web3Service {
   private web3: any;
   private accounts: string[];
-  public ready = false;
-
   public accountsObservable = new ReplaySubject<string[]>();
 
   constructor() {
-    window.addEventListener('load', (event: any) => {
-      this.checkWeb3NoPopup();
-    });
+    this.connectWeb3(false);
   }
 
   public getAcccount(): Observable<string[]>  {
     return this.accountsObservable.asObservable();
   }
 
-  public getDisplayAcccount(): Observable<string[]>  {
-    return this.accountsObservable.asObservable().pipe(
-      map((s) => {
-        for (let a=0; a < s.length; ++a) {
-          const l: number = s[a].length;
-          s[a] = s[a].substring(0, 6) + '...' + s[a].substring(l - 4, l); 
-        }
-        return s;
-      })
-    );
+  public getDisplayAcccount(account: string): string  {
+      const l: number = account.length;
+      return account.substring(0, 6) + '...' + account.substring(l - 4, l); 
   }
 
-  public connectWeb3WithPopup() {
-    if (typeof window.ethereum !== 'undefined') {
-      window.ethereum.enable().then(() => {
-        this.web3 = new Web3(window.ethereum);
-      }).catch((e: any) => {
-        console.log('Error connecting to Web3', e);
-      });
+  private connect() {
+    this.web3 = new Web3(window.ethereum);
+
+    this.web3.eth.getAccounts().then((accs: any) => {
+      // Get the initial account balance so it can be displayed.
+      if (accs.length === 0) {
+        console.warn('Couldn\'t get any accounts! Make sure your Ethereum client is configured correctly.');
+        return;
+      }
+
+      if (!this.accounts || this.accounts.length !== accs.length || this.accounts[0] !== accs[0]) {
+        this.accountsObservable.next(accs);
+        this.accounts = accs;
+      }
+    });
+
+    window.ethereum.on('accountsChanged', (accounts: any) => {
+      this.accounts = accounts;
+      this.accountsObservable.next(accounts);
+      console.log('accounts changed', accounts);
+    });
+  }
+
+  public connectWeb3(withPopup: boolean) {
+    if (withPopup) {
+      if (window.ethereum) {
+        window.ethereum.request({ method: 'eth_requestAccounts' }).then(() => {
+          this.connect();
+        });
+      } else {
+        window.alert('Non-Ethereum browser detected. You Should consider using MetaMask!');
+      }
     } else {
-      window.alert('Non-Ethereum browser detected. You Should consider using MetaMask!');
+      if (window.ethereum) {
+        this.connect();
+      }
     }
-    setInterval(() => this.refreshAccounts(), 100);
-  }
-
-  private checkWeb3NoPopup() {
-    // Checking if Web3 has been injected by the browser (Mist/MetaMask)
-    if (window.ethereum) {
-      this.web3 = new Web3(window.ethereum);
-    }
-    setInterval(() => this.refreshAccounts(), 100);
   }
 
   public async artifactsToContract(artifacts: any): Promise<any> {
     if (!this.web3) {
-      console.log('Waiting for web3');
       const delay = new Promise(resolve => setTimeout(resolve, 100));
       await delay;
       return await this.artifactsToContract(artifacts);
@@ -71,22 +77,5 @@ export class Web3Service {
     const contractAbstraction = contract(artifacts);
     contractAbstraction.setProvider(this.web3.currentProvider);
     return contractAbstraction;
-  }
-
-  private async refreshAccounts() {
-    const accs = await this.web3.eth.getAccounts();
-
-    // Get the initial account balance so it can be displayed.
-    if (accs.length === 0) {
-      console.warn('Couldn\'t get any accounts! Make sure your Ethereum client is configured correctly.');
-      return;
-    }
-
-    if (!this.accounts || this.accounts.length !== accs.length || this.accounts[0] !== accs[0]) {
-      this.accountsObservable.next(accs);
-      this.accounts = accs;
-    }
-
-    this.ready = true;
   }
 }

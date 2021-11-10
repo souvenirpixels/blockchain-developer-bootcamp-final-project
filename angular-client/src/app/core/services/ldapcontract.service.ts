@@ -35,12 +35,18 @@ export class LDAPContractService {
    }
 
    mint(tokenURI: string, assetURI: string, price: number): Promise<Asset> {
-    if (this.connectedAccount) {
-      const trans = this.ldapContractInstance.mint(tokenURI, assetURI, price*100, this.connectedAccount, {from: this.connectedAccount});
-      return trans;  
-    } else {
-      throw new Error('Unabled to mint without connected web3 account');
-    }
+    return new Promise((resolve, reject) => {
+      if (this.connectedAccount) {
+        this.ldapContractInstance.mint(tokenURI, assetURI, price*100, this.connectedAccount, {from: this.connectedAccount}).then((ret:any) => {
+          resolve(ret);
+        }).catch((e:any) => {
+          reject(e);
+        });
+        
+      } else {
+        reject('Connect metamask to mint.');
+      }
+    });
    }
   
    search(): Observable <Asset[]> {
@@ -55,9 +61,7 @@ export class LDAPContractService {
           
           this.http.get<Asset>(a.URI)
           .pipe(map(response => {
-              console.log('Response=', response);
-              console.log('Data=', response);
-              newAsset.tokenURIData = response;
+              newAsset.setTokenURIData(response);
               this.assetListCache.push(newAsset);
               this.assetListSubject.next(this.assetListCache);
           })).subscribe(
@@ -68,7 +72,6 @@ export class LDAPContractService {
               } else {
                 newAsset.errorMessage = error;
               }
-              console.log('Error=', newAsset.errorMessage);
               this.assetListCache.push(newAsset);
               this.assetListSubject.next(this.assetListCache);
             }

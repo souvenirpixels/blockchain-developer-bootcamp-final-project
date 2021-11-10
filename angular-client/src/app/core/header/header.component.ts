@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MDBModalRef, MDBModalService } from 'angular-bootstrap-md';
 import { ConnectedComponent } from '../modals/connected/connected.component';
 import { Web3Service } from '../services/web3.service';
@@ -12,16 +12,17 @@ export class HeaderComponent implements OnInit {
   connectedAccount: string;
   modalRef: MDBModalRef;
 
-  constructor(private web3Service: Web3Service, private modalService: MDBModalService) {
+  constructor(private web3Service: Web3Service, private modalService: MDBModalService, private ref: ChangeDetectorRef) {
   }
   
   ngOnInit(): void {
-    this.web3Service.getDisplayAcccount().subscribe(resp => {
+    this.web3Service.getAcccount().subscribe(resp => {
       if (resp && resp[0]) {
-        this.connectedAccount = resp[0];
+        this.connectedAccount = this.web3Service.getDisplayAcccount(resp[0]);
       } else {
         this.connectedAccount = '';
       } 
+      this.ref.detectChanges(); // This changes button after a change
     });
   }
 
@@ -42,6 +43,6 @@ export class HeaderComponent implements OnInit {
   }
 
   onConnectClickNotConnected() {
-    this.web3Service.connectWeb3WithPopup();
+    this.web3Service.connectWeb3(true);
   }
 }

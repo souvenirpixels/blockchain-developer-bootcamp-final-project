@@ -1,0 +1,60 @@
+{
+    "name": "",
+    "description": "", 
+    "external_url": "", 
+    "image": "", 
+    "animation_url": "",
+    "ldap_metadata_version": "0.1",
+    "sizes": {
+      "image_120px": "",
+      "image_240px": "",
+      "image_480px": "",
+      "image_960px": "",
+      "image_1920px": "",
+      "image_3840px": "",
+      "animation_url_120px": "",
+      "animation_url_240px": "",
+      "animation_url_480px": "",
+      "animation_url_960px": "",
+      "animation_url_1920px": "",
+      "animation_url_3840px": ""
+    },
+    "properties": 
+      {
+        "keywords": {
+            "name": "Keywords",
+            "display_type": "array",
+            "value": []
+        },
+        "creation_date": {
+            "name": "Creation Date",
+            "display_type": "date",
+            "value": ""
+        },
+        "asset_type": {
+            "name": "Type",
+            "display_type": "string",
+            "value": ""
+        },
+        "pixel_height": {
+            "name": "Pixel Height",
+            "display_type": "number",
+            "value": ""
+        },
+        "pixel_width": {
+            "name": "Pixel Width",   
+            "display_type": "number",
+            "value": ""
+        },
+        "usage": {
+            "name": "Usage",
+            "display_type": "string",
+            "value": ""
+        },
+        "number_of_people": {
+            "name": "Number of People",
+            "display_type": "number",
+            "value": ""
+        }
+      }
+}  
