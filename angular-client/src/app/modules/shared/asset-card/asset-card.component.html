@@ -16,6 +16,7 @@
   
       <!--Text-->
       <mdb-card-text>
+        <p>{{ asset.status }}</p>
         <p>{{ asset.description }}</p>
       </mdb-card-text>
       <button mdbBtn type="button" color="primary" size="lg" class="mx-auto d-block" [disabled]="errorMessage" mdbWavesEffect>Buy Licence ({{ asset.price }} ETH)</button>

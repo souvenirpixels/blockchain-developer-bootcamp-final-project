@@ -4,6 +4,12 @@ export enum PhotoSizeEnum {
     MEDIUM = 3
 }
 
+export enum AssetStatusEnum {
+    PENDING = "Pending",
+    MINED = "Mined",
+    ERROR = "Error"
+}
+
 export class Asset {
     id?: number;
     tokenURI: string;
@@ -25,6 +31,7 @@ export class Asset {
     pixel_width: number;
     usage: string;
     number_of_people: number;
+    status: AssetStatusEnum;
 
     getPhotoSrc(size: PhotoSizeEnum): string {
         // TODO: Implement the photoSizeEnum properly

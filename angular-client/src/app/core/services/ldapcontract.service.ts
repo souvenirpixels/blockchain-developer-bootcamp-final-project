@@ -35,11 +35,12 @@ export class LDAPContractService {
     });
    }
 
-   mint(tokenURI: string, assetURI: string, price: number): Promise<Asset> {
+   mint(asset: Asset): Promise<Asset> {
     return new Promise((resolve, reject) => {
       if (this.connectedAccount) {
-        this.ldapContractInstance.mint(tokenURI, assetURI, price*100, this.connectedAccount, {from: this.connectedAccount}).then((ret:any) => {
-          resolve(new Asset(tokenURI, assetURI, price*100, this.connectedAccount));
+        this.ldapContractInstance.mint(asset.tokenURI, asset.assetURI, asset.price*100, this.connectedAccount, {from: this.connectedAccount}).then((ret:any) => {
+          asset.owner = this.connectedAccount;
+          resolve(asset);
         }).catch((e:any) => {
           reject(e);
         });
