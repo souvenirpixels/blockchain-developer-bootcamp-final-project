@@ -1,7 +1,6 @@
-import { Web3Service } from './../../../core/services/web3.service';
 import { Component, OnInit } from '@angular/core';
 import { Asset } from 'src/app/core/models/asset.model';
-import { LDAPContractService } from 'src/app/core/services/ldapcontract.service';
+import { AssetsService } from 'src/app/core/services/assets.service';
 
 @Component({
   selector: 'app-mint-main',
@@ -13,11 +12,14 @@ export class MintMainComponent implements OnInit {
   metadataURL: string='http://localhost:4200/assets/morainelake.json'; // Default for testing fix later
   price: number;
   errorMessage: string;
-  assetList: Asset[];
+  pendingAssetList: Asset[] = [];
 
-  constructor(private ldapContractService: LDAPContractService) { }
+  constructor(private assetsService: AssetsService) { }
 
   ngOnInit(): void { 
+    this.assetsService.getPendingAssets().subscribe((response: Asset[]) => {
+      this.pendingAssetList = response;
+    });
   }
 
   onMintClick() {
@@ -35,8 +37,7 @@ export class MintMainComponent implements OnInit {
                !validPrefixes.some(v => this.photoURL.substr(0, this.photoURL.indexOf('://')).includes(v))) {
       this.errorMessage =  "Metadata URL and photoURL must start with: http://, https://, ipfs:// or ar://";
     } else {
-      this.assetList.push(new Asset(this.metadataURL, this.photoURL, this.price));
-      this.ldapContractService.mint(this.metadataURL, this.photoURL, this.price).then((asset) => {
+      this.assetsService.mintAsset(this.metadataURL, this.photoURL, this.price).then((asset) => {
         console.log('Asset=', asset);
       }).catch((e) => {
         console.log('Error=', e);

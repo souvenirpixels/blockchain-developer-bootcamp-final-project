@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Web3Service } from './services/web3.service';
+import { LDAPContractService } from './services/ldapcontract.service';
+import { AssetsService } from './services/assets.service';
 import { HeaderComponent } from './header/header.component';
 import { ButtonsModule,
          NavbarModule,
@@ -11,7 +13,7 @@ import { ButtonsModule,
          ModalModule,
          BadgeModule } from 'angular-bootstrap-md';
 import { RouterModule } from '@angular/router';
-import { LDAPContractService } from './services/ldapcontract.service';
+
 import { FormsModule } from '@angular/forms';
 import { ConnectedComponent } from './modals/connected/connected.component';
 import { HttpClientModule } from '@angular/common/http';
@@ -51,7 +53,8 @@ import { HttpClientModule } from '@angular/common/http';
   ],
   providers: [
     Web3Service,
-    LDAPContractService
+    LDAPContractService,
+    AssetsService
   ]
 })
 export class CoreModule { }

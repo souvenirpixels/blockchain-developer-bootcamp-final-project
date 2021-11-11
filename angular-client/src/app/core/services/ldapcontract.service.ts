@@ -35,16 +35,11 @@ export class LDAPContractService {
     });
    }
 
-   // TODO: Have this return an observable of items that are being minted
-   // TODO: Think I need to create an asset service, so it can  read the JSON and get the photo thumbnail to be read and show in progress
    mint(tokenURI: string, assetURI: string, price: number): Promise<Asset> {
     return new Promise((resolve, reject) => {
       if (this.connectedAccount) {
-        console.log('Running Mint');
         this.ldapContractInstance.mint(tokenURI, assetURI, price*100, this.connectedAccount, {from: this.connectedAccount}).then((ret:any) => {
-          console.log('ret', ret.logs[0].args);
-
-          resolve(ret);
+          resolve(new Asset(tokenURI, assetURI, price*100, this.connectedAccount));
         }).catch((e:any) => {
           reject(e);
         });
