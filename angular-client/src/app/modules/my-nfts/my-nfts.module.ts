@@ -1,15 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MyNftsMainComponent } from './my-nfts-main/my-nfts-main.component';
 import { CoreModule } from 'src/app/core/core.module';
-import { NftsMainComponent } from './nfts-main/nfts-main.component';
 
 @NgModule({
   declarations: [
-    NftsMainComponent
+    MyNftsMainComponent
   ],
   imports: [
     CommonModule,
     CoreModule
   ]
 })
-export class NftsModule { }
+export class MyNftsModule { }

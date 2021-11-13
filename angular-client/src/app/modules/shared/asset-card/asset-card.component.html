@@ -1,24 +1,43 @@
 
-<mdb-card>
-    <!--Card image-->
-    <mdb-card-img *ngIf="imageURL" src="{{ imageURL }}" alt="Card image cap"></mdb-card-img>
-    <mdb-card-img *ngIf="!imageURL" src="/assets/broken-image.png" alt="Card image cap"></mdb-card-img>
-    
-    <!--Card content-->
-    <mdb-card-body>
-      <div *ngIf="errorMessage" class="alert alert-danger mt-2  text-center" role="alert">
-        {{errorMessage }}
+<mdb-card>    
+    <div class="view">
+      <mdb-card-img *ngIf="imageURL" src="{{ imageURL }}" alt="Card image cap"></mdb-card-img>
+      <mdb-card-img *ngIf="!imageURL" src="/assets/broken-image.png" alt="Card image cap"></mdb-card-img>
+      <!-- img src="https://mdbootstrap.com/img/Photos/Others/nature-sm.jpg" class="img-fluid" alt="" -->
+      <div *ngIf="showSpinny || asset.status === assetStatusEnum.PENDING" class="mask flex-center rgba-black-light">
+        <div class="spinner-border text-white" style="width: 5rem; height: 5rem;" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
       </div>
+      <div *ngIf="!showSpinny && asset.status === assetStatusEnum.ERROR" class="mask flex-center rgba-black-light">
+        <mdb-icon fas icon="exclamation-circle" class="red-text" size="5x"></mdb-icon>
+      </div>
+      
+    </div>
+    <div *ngIf="showMiningMessages && asset.status === assetStatusEnum.PENDING" class="alert alert-success text-center mb-0" role="alert">
+      Transaction pending.
+    </div>
+    <div *ngIf="showMiningMessages && asset.status === assetStatusEnum.MINED" class="alert alert-success text-center mb-0" role="alert">
+      NFT Created
+    </div>
+    <div *ngIf="errorMessage" class="alert alert-danger text-center mb-0" role="alert">
+      {{ errorMessage }} 
+    </div>
+    <div *ngIf="asset.errorMessage" class="alert alert-danger text-center mb-0" role="alert">
+      {{ asset.errorMessage }} 
+    </div>
+    <!--Card content-->
+    <mdb-card-body *ngIf="showDetails">
       <!--Title-->
-      <mdb-card-title>
+      <mdb-card-title *ngIf="showDetails">
         <h4>{{ asset.name }}</h4>
       </mdb-card-title>
   
       <!--Text-->
-      <mdb-card-text>
+      <mdb-card-text *ngIf="showDetails">
         <p>{{ asset.status }}</p>
         <p>{{ asset.description }}</p>
       </mdb-card-text>
-      <button mdbBtn type="button" color="primary" size="lg" class="mx-auto d-block" [disabled]="errorMessage" mdbWavesEffect>Buy Licence ({{ asset.price }} ETH)</button>
+      <button *ngIf="buyButton" mdbBtn type="button" color="primary" size="lg" class="mx-auto d-block" [disabled]="errorMessage" mdbWavesEffect>Buy Licence ({{ asset.price }} ETH)</button>
     </mdb-card-body>
   </mdb-card>

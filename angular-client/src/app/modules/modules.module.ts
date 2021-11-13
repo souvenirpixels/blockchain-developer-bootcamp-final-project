@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { CoreModule } from 'src/app/core/core.module';
 import { MintModule } from 'src/app/modules/mint/mint.module';
 import { LicenceModule } from './licence/licence.module';
-import { NftsModule } from './nfts/nfts.module';
-
+import { MyNftsModule } from './my-nfts/my-nfts.module';
+import { MyLicencesModule } from './my-licences/my-licences.module';
 
 @NgModule({
   declarations: [ ],
@@ -13,7 +13,10 @@ import { NftsModule } from './nfts/nfts.module';
     CoreModule,
     MintModule,
     LicenceModule,
-    NftsModule
+    MyNftsModule,
+    MyLicencesModule
   ]
 })
 export class ModulesModule { }
+
+// Todo next: Create my-nfts and my-licences components then implement my-nfts so can see all of my nfts

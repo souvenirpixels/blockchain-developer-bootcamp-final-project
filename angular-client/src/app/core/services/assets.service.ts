@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable, ReplaySubject, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Asset, AssetStatusEnum } from '../models/asset.model';
 import { LDAPContractService } from './ldapcontract.service';
@@ -11,7 +11,7 @@ import { LDAPContractService } from './ldapcontract.service';
 export class AssetsService {
   constructor(private ldapContractService: LDAPContractService, private http: HttpClient) { }
 
-  private pendingAssetsSubject: Subject<Asset[]> = new Subject<Asset[]>();
+  private pendingAssetsSubject: Subject<Asset[]> = new ReplaySubject<Asset[]>();
   private pendingAssetsCache: Asset[] = [];
 
   private assetStatusEnum = AssetStatusEnum;
@@ -59,6 +59,12 @@ export class AssetsService {
           resolve(asset);
         }).catch((e) => {
           this.pendingAssetsCache[newLength-1].status = this.assetStatusEnum.ERROR;
+          if (e.message) {
+            this.pendingAssetsCache[newLength-1].errorMessage = e.message;
+          } else { 
+            this.pendingAssetsCache[newLength-1] = e;
+          }
+          
           this.pendingAssetsSubject.next(this.pendingAssetsCache);
           reject (e);
         });

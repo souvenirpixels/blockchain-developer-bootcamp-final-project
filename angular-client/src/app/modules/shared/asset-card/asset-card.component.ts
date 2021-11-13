@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Asset, PhotoSizeEnum } from 'src/app/core/models/asset.model';
+import { Asset, AssetStatusEnum, PhotoSizeEnum } from 'src/app/core/models/asset.model';
 
 @Component({
   selector: 'app-asset-card',
@@ -8,9 +8,15 @@ import { Asset, PhotoSizeEnum } from 'src/app/core/models/asset.model';
 })
 export class AssetCardComponent implements OnInit {
   @Input() asset: Asset;
+  @Input() buyButton: boolean = true;
+  @Input() errorMessage: string = '';
+  @Input() showMiningMessages: boolean = false;
+  @Input() showDetails: boolean = true;
+  @Input() showSpinny: boolean = false;
+  
   imageURL: string;
-  errorMessage: string;
-  photoSizeEnum = PhotoSizeEnum;
+  private photoSizeEnum = PhotoSizeEnum;
+  assetStatusEnum = AssetStatusEnum;
   
   constructor() { }
 

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Asset } from 'src/app/core/models/asset.model';
+import { Asset, AssetStatusEnum } from 'src/app/core/models/asset.model';
 import { AssetsService } from 'src/app/core/services/assets.service';
 
 @Component({
@@ -13,6 +13,8 @@ export class MintMainComponent implements OnInit {
   price: number;
   errorMessage: string;
   pendingAssetList: Asset[] = [];
+  assetStatusEnum = AssetStatusEnum;
+  buttonSpinny: boolean = false;
 
   constructor(private assetsService: AssetsService) { }
 
@@ -41,11 +43,6 @@ export class MintMainComponent implements OnInit {
         console.log('Asset=', asset);
       }).catch((e) => {
         console.log('Error=', e);
-        if (e.message) {
-          this.errorMessage = e.message;  
-        } else {
-          this.errorMessage = e;
-        }
       });    
     }
   }
