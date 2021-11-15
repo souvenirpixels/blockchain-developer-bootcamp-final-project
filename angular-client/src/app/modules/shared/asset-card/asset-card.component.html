@@ -37,7 +37,38 @@
       <mdb-card-text *ngIf="showDetails">
         <p>{{ asset.status }}</p>
         <p>{{ asset.description }}</p>
-      </mdb-card-text>
-      <button *ngIf="buyButton" mdbBtn type="button" color="primary" size="lg" class="mx-auto d-block" [disabled]="errorMessage" mdbWavesEffect>Buy Licence ({{ asset.price }} ETH)</button>
+        <p *ngIf="showTokenId" class="mb-0"><strong>Token ID: </strong>{{ asset.id }}</p>
+        <p *ngIf="showPrice" class="mb-0"><strong>Price: </strong>{{ asset.price }} ETH</p>
+        <p *ngIf="showTokenURI" class="mb-0"><strong>Token URI: </strong>{{ asset.tokenURI }}</p>
+        <div class="row justify-content-center">
+          <button mdbBtn 
+                  *ngIf="showBurnTransferButtons" 
+                  type="button" 
+                  color="primary" 
+                  size="lg" 
+                  (click)="burnClick.emit(asset)"
+                  mdbWavesEffect>Burn
+          </button>
+          <button mdbBtn 
+                  *ngIf="showBurnTransferButtons" 
+                  type="button" 
+                  color="primary" 
+                  (click)="transferClick.emit(asset)"
+                  size="lg" 
+                  mdbWavesEffect>Transfer
+          </button>
+        </div>
+        <button mdbBtn 
+                *ngIf="buyButton" 
+                type="button" 
+                color="primary"
+                (click)="buyLicenceClick.emit(asset)" 
+                size="lg" 
+                class="mx-auto d-block" 
+                [disabled]="errorMessage" 
+                mdbWavesEffect>Buy Licence ({{ asset.price }} ETH)
+        </button>
+
+      </mdb-card-text>      
     </mdb-card-body>
   </mdb-card>

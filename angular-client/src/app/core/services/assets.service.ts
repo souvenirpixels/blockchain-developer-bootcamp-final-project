@@ -1,3 +1,4 @@
+import { Web3Service } from './web3.service';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, ReplaySubject, Subject } from 'rxjs';
@@ -9,15 +10,39 @@ import { LDAPContractService } from './ldapcontract.service';
   providedIn: 'root'
 })
 export class AssetsService {
-  constructor(private ldapContractService: LDAPContractService, private http: HttpClient) { }
+  private assetStatusEnum = AssetStatusEnum;
 
   private pendingAssetsSubject: Subject<Asset[]> = new ReplaySubject<Asset[]>();
   private pendingAssetsCache: Asset[] = [];
 
-  private assetStatusEnum = AssetStatusEnum;
+  private myAssetsSubject: Subject<Asset[]> = new ReplaySubject<Asset[]>();
+  private myAssetsCache: Asset[] = [];
 
-  getPendingAssets(): Observable<Asset[]> {
-    return this.pendingAssetsSubject.asObservable();
+  private connectedAccount: string;
+
+  constructor(private ldapContractService: LDAPContractService, private http: HttpClient, private web3Service: Web3Service) {
+    this.web3Service.getAcccount().subscribe(resp => {
+      if (resp && resp[0] && this.connectedAccount !== resp[0]) {
+        this.connectedAccount = resp[0];
+
+        // Clear out cache because new user
+        if (this.pendingAssetsCache !== []) {
+          this.pendingAssetsCache = [];
+        }
+
+        // Reload cache for new user
+        if (this.myAssetsCache !== []) {
+          
+          this.getAssetsPromise().then((assets) => {
+            console.log('Got my assets again');
+            this.myAssetsCache = assets;
+            this.myAssetsSubject.next(this.myAssetsCache);
+          });
+        }
+      } else {
+        this.connectedAccount = '';
+      } 
+    });
   }
 
   private readMetadata(asset: Asset): Promise<Asset> {
@@ -40,10 +65,33 @@ export class AssetsService {
     });    
   }
 
-  // TODO: Update the UI to show the status' correctly
+  private async getAssetsPromise() {
+    let promises: Promise<Asset>[] = [];
+    let balance = await this.ldapContractService.balanceOfConnectedAccount();
+    for (let i=0; i < balance; ++i) {
+      let tokenId = await this.ldapContractService.tokenOfConnectedAccountByIndex(i);
+      let asset = await this.ldapContractService.assetInfo(tokenId);
+      promises.push(this.readMetadata(asset));
+    }
+
+    return Promise.all(promises);
+  }
+
+  // Did it this way so only one next so all assets are shown at the same time
+  // Otherwise there is a bit of a flickr when the load one at a time which doesn't look good in the UI
+  getMyAssets(): Observable<Asset[]> {
+    this.getAssetsPromise().then((assets) => {
+      this.myAssetsCache = assets;
+      this.myAssetsSubject.next(this.myAssetsCache);
+    });
+    return this.myAssetsSubject.asObservable();
+  }
+
+  getPendingAssets(): Observable<Asset[]> {
+    return this.pendingAssetsSubject.asObservable();
+  }
 
   mintAsset(tokenURI: string, assetURI: string, price: number): Promise<Asset> {
-    console.log('Minting Asset');
     return new Promise((resolve, reject) => {
       let asset = new Asset(tokenURI, assetURI, price*100);
       
@@ -71,8 +119,6 @@ export class AssetsService {
       }).catch((e) => {
         reject (e);
       })
-
-
     });
   }
 }

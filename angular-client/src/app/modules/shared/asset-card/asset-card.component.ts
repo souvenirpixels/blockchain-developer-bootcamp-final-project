@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Asset, AssetStatusEnum, PhotoSizeEnum } from 'src/app/core/models/asset.model';
 
 @Component({
@@ -13,7 +13,16 @@ export class AssetCardComponent implements OnInit {
   @Input() showMiningMessages: boolean = false;
   @Input() showDetails: boolean = true;
   @Input() showSpinny: boolean = false;
-  
+  @Input() showTokenId: boolean = false;
+  @Input() showPrice: boolean = false;
+  @Input() showTokenURI: boolean = false;
+  @Input() showBurnTransferButtons: boolean = false;
+
+  @Output() burnClick: EventEmitter<Asset> = new EventEmitter();
+  @Output() transferClick: EventEmitter<Asset> = new EventEmitter();
+  @Output() buyLicenceClick: EventEmitter<Asset> = new EventEmitter();
+
+
   imageURL: string;
   private photoSizeEnum = PhotoSizeEnum;
   assetStatusEnum = AssetStatusEnum;
