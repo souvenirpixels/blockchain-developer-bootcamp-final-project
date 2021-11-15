@@ -84,6 +84,7 @@ export class LDAPContractService {
    }
 
    async assetInfo(index: number): Promise<Asset> {
+     console.log('Getting asset info from blockchain');
     await this.init();
     return new Promise((resolve, reject) => {
       this.ldapContractInstance.assetInfo(index).then((asset: any) => {

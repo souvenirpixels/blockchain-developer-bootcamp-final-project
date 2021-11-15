@@ -1,8 +1,8 @@
 import { Web3Service } from './web3.service';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, ReplaySubject, Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 import { Asset, AssetStatusEnum } from '../models/asset.model';
 import { LDAPContractService } from './ldapcontract.service';
 
@@ -15,38 +15,59 @@ export class AssetsService {
   private pendingAssetsSubject: Subject<Asset[]> = new ReplaySubject<Asset[]>();
   private pendingAssetsCache: Asset[] = [];
 
-  private myAssetsSubject: Subject<Asset[]> = new ReplaySubject<Asset[]>();
+  private myAssetsSubject: Subject<Asset[]> = new Subject<Asset[]>();
   private myAssetsCache: Asset[] = [];
 
   private connectedAccount: string;
 
+  private getAccountSubscription: any;
+
   constructor(private ldapContractService: LDAPContractService, private http: HttpClient, private web3Service: Web3Service) {
-    this.web3Service.getAcccount().subscribe(resp => {
-      if (resp && resp[0] && this.connectedAccount !== resp[0]) {
-        this.connectedAccount = resp[0];
 
-        // Clear out cache because new user
-        if (this.pendingAssetsCache !== []) {
-          this.pendingAssetsCache = [];
-        }
+  }
 
-        // Reload cache for new user
-        if (this.myAssetsCache !== []) {
-          
-          this.getAssetsPromise().then((assets) => {
-            console.log('Got my assets again');
-            this.myAssetsCache = assets;
-            this.myAssetsSubject.next(this.myAssetsCache);
-          });
-        }
+  // When the page reloads the account changes from undefined to logged in account
+  // This then triggers reading from the blockchain.  However, this takes some time, but if done in the constructor then
+  // not possible to do a loading sign via the UI. This init function is used to initalize and a spinny can be used in the UI
+  async init(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      if (!this.getAccountSubscription) {
+        this.getAccountSubscription = this.web3Service.getAcccount();
+        this.getAccountSubscription.subscribe(async (resp: any) => {
+          try {
+            console.log('Got new account', this.connectedAccount, resp[0]);
+            if (resp && resp[0] && this.connectedAccount !== resp[0]) {
+              this.connectedAccount = resp[0];
+      
+              // Clear out cache because new user
+              if (this.pendingAssetsCache !== []) {
+                this.pendingAssetsCache = [];
+              }
+      
+              // Reload cache for new user
+              if (this.myAssetsCache !== []) {
+                console.log('User changed, get new assets', this.connectedAccount );
+                const assets: Asset[] = await this.getAssetsPromise();
+                console.log('Got my assets again');
+                this.myAssetsCache = assets;
+                this.myAssetsSubject.next(this.myAssetsCache);
+                
+              }
+            } else {
+              this.connectedAccount = '';
+            } 
+            resolve(true);
+          } catch(e) {
+            reject (e);
+          }
+        });
       } else {
-        this.connectedAccount = '';
-      } 
+        resolve(true); // if not needd to initalize then just return true
+      }
     });
   }
 
   private readMetadata(asset: Asset): Promise<Asset> {
-    console.log('Reading Metadata');
     return new Promise((resolve, reject) => {
       this.http.get<Asset>(asset.tokenURI)
       .pipe(map(response => {
@@ -80,11 +101,16 @@ export class AssetsService {
   // Did it this way so only one next so all assets are shown at the same time
   // Otherwise there is a bit of a flickr when the load one at a time which doesn't look good in the UI
   getMyAssets(): Observable<Asset[]> {
-    this.getAssetsPromise().then((assets) => {
-      this.myAssetsCache = assets;
-      this.myAssetsSubject.next(this.myAssetsCache);
-    });
-    return this.myAssetsSubject.asObservable();
+    if (this.myAssetsCache === []) {
+      console.log('Getting new assets', this.myAssetsCache);
+      this.getAssetsPromise().then((assets) => {
+        console.log('Got new assets', assets);
+        this.myAssetsCache = assets;
+        this.myAssetsSubject.next(this.myAssetsCache);
+      });
+    }
+
+    return this.myAssetsSubject.pipe(startWith(this.myAssetsCache));
   }
 
   getPendingAssets(): Observable<Asset[]> {
@@ -104,6 +130,14 @@ export class AssetsService {
         this.ldapContractService.mint(asset).then((asset) => {
           this.pendingAssetsCache[newLength-1].status = this.assetStatusEnum.MINED;
           this.pendingAssetsSubject.next(this.pendingAssetsCache);
+
+          // Update the myNFTs list
+          this.getAssetsPromise().then((assets) => {
+            console.log('Got new assets from Mint', assets);
+            this.myAssetsCache = assets;
+            this.myAssetsSubject.next(this.myAssetsCache);
+          });
+
           resolve(asset);
         }).catch((e) => {
           this.pendingAssetsCache[newLength-1].status = this.assetStatusEnum.ERROR;

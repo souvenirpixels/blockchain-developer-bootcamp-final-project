@@ -19,9 +19,11 @@ export class MintMainComponent implements OnInit {
   constructor(private assetsService: AssetsService) { }
 
   ngOnInit(): void { 
-    this.assetsService.getPendingAssets().subscribe((response: Asset[]) => {
-      this.pendingAssetList = response;
-    });
+    this.assetsService.init().then((resp) => {
+      this.assetsService.getPendingAssets().subscribe((response: Asset[]) => {
+        this.pendingAssetList = response;
+      });
+    })
   }
 
   onMintClick() {

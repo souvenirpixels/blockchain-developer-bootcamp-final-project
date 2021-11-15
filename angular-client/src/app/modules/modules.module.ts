@@ -18,5 +18,3 @@ import { MyLicencesModule } from './my-licences/my-licences.module';
   ]
 })
 export class ModulesModule { }
-
-// Todo next: Create my-nfts and my-licences components then implement my-nfts so can see all of my nfts
