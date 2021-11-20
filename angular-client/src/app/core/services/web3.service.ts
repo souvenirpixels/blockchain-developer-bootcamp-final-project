@@ -15,8 +15,10 @@ export class Web3Service {
   private accounts: string[];
   public accountsObservable = new ReplaySubject<string[]>();
 
-  constructor() {
-    this.connectWeb3(false);
+  constructor() { }
+
+  async init(): Promise<any> {
+    return this.connectWeb3(false);
   }
 
   public getAcccount(): Observable<string[]>  {
@@ -28,50 +30,58 @@ export class Web3Service {
       return account.substring(0, 6) + '...' + account.substring(l - 4, l); 
   }
 
-  private connect() {
-    this.web3 = new Web3(window.ethereum);
+  private connect(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      window.ethereum.on('accountsChanged', (accounts: any) => {
+        if (accounts.length === 0) {
+          console.warn('Unable to read accounts, check metamask is connected.');
+        }
+        this.accounts = accounts;
+        this.accountsObservable.next(accounts);
+      });
 
-    this.web3.eth.getAccounts().then((accs: any) => {
-      // Get the initial account balance so it can be displayed.
-      if (accs.length === 0) {
-        console.warn('Couldn\'t get any accounts! Make sure your Ethereum client is configured correctly.');
-        return;
-      }
-
-      if (!this.accounts || this.accounts.length !== accs.length || this.accounts[0] !== accs[0]) {
-        this.accountsObservable.next(accs);
-        this.accounts = accs;
-      }
-    });
-
-
-    window.ethereum.on('accountsChanged', (accounts: any) => {
-      this.accounts = accounts;
-      this.accountsObservable.next(accounts);
+      this.web3 = new Web3(window.ethereum);
+      this.web3.eth.getAccounts().then((accs: any) => {
+        // Get the initial account balance so it can be displayed.
+        if (accs.length === 0) {
+          console.warn('Unable to read accounts, check metamask is connected.');
+          reject('Unable to read accounts, check metamask is connected.');
+        } else if (!this.accounts || this.accounts.length !== accs.length || this.accounts[0] !== accs[0]) {
+          this.accounts = accs;
+          this.accountsObservable.next(this.accounts);
+        }
+        resolve(accs);
+      });        
     });
   }
 
-  public connectWeb3(withPopup: boolean) {
-    if (withPopup) {
-      if (window.ethereum) {
-        window.ethereum.request({ method: 'eth_requestAccounts' }).then(() => {
-          this.connect();
-        });
+  public connectWeb3(withPopup: boolean): Promise<any> {
+    return new Promise((resolve, reject) => {
+      if (withPopup) {
+        if (window.ethereum) {
+          window.ethereum.request({ method: 'eth_requestAccounts' }).then(() => {
+            this.connect().then((resp) => {
+              resolve(resp);
+            }).catch((e) => {
+              reject(e);
+            });
+          });
+        } else {
+          // TODO: This should really be done at the component level
+          window.alert('Non-Ethereum browser detected. You Should consider using MetaMask!');
+          throw new Error('Non-Ethereum browser detected. You Should consider using MetaMask!');
+        }
       } else {
-        window.alert('Non-Ethereum browser detected. You Should consider using MetaMask!');
+        if (window.ethereum) {
+          this.connect().then((resp) => {
+            resolve(resp);
+          }).catch((e) => {
+            reject(e);
+          });        }
       }
-    } else {
-      if (window.ethereum) {
-        this.connect();
-      }
-    }
-  }
+    });   
 
-  /*public getTransaction(transId: string) {
-    this.web3.eth.getTransaction(transId, (err: any, result: any) => {
-      console.log('Transaction returned', err, result);
-    });
-  }*/
+  }
 
   public async artifactsToContract(artifacts: any): Promise<any> {
     if (!this.web3) {

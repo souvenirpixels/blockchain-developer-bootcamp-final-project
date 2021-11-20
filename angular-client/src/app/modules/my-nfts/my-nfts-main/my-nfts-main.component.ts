@@ -11,6 +11,7 @@ export class MyNftsMainComponent implements OnInit {
   myAssets: Asset[] = [];
   loading: boolean = false;
   private subscription: any;
+  errorMessage: string;
 
   constructor(private assetsService: AssetsService, private ref: ChangeDetectorRef) { }
 
@@ -20,15 +21,28 @@ export class MyNftsMainComponent implements OnInit {
   ngOnInit(): void {
       this.loading = true;
       this.assetsService.init().then((resp) => {
-        console.log('Getting new assets');
-        this.subscription = this.assetsService.getMyAssets().subscribe((resp: Asset[]) => {
-          console.log('my NFTs main got new assets', resp);
-          this.myAssets = [...resp]; // Clone the myAssets array
-          this.loading = false;
-          this.ref.detectChanges();
-        });
+      }).catch((e: any) => {
+        console.warn('Error on my NFTs', e);
+        this.errorMessage = e;
+        this.loading = false;
       });
-  }
+      
+      this.subscription = this.assetsService.getMyAssets().subscribe((resp: Asset[]) => {
+        this.errorMessage = ''; // Clear error messages
+
+        this.myAssets = [...resp]; // Clone the myAssets array
+        if (resp.length === 0) {
+          this.errorMessage = 'No NFTs found for this wallet.' 
+        }
+        
+        this.loading = false;
+        this.ref.detectChanges();
+      }, 
+      (err) => {
+        this.errorMessage = err; 
+        this.loading = false;
+      });
+    }
   ngOnDestroy(){
     this.subscription.unsubscribe();
   }

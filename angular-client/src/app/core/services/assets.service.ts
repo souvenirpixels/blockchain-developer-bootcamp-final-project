@@ -30,12 +30,11 @@ export class AssetsService {
   // This then triggers reading from the blockchain.  However, this takes some time, but if done in the constructor then
   // not possible to do a loading sign via the UI. This init function is used to initalize and a spinny can be used in the UI
   async init(): Promise<any> {
-    return new Promise((resolve, reject) => {
+    //return new Promise((resolve, reject) => {
       if (!this.getAccountSubscription) {
         this.getAccountSubscription = this.web3Service.getAcccount();
         this.getAccountSubscription.subscribe(async (resp: any) => {
           try {
-            console.log('Got new account', this.connectedAccount, resp[0]);
             if (resp && resp[0] && this.connectedAccount !== resp[0]) {
               this.connectedAccount = resp[0];
       
@@ -46,25 +45,26 @@ export class AssetsService {
       
               // Reload cache for new user
               if (this.myAssetsCache !== []) {
-                console.log('User changed, get new assets', this.connectedAccount );
                 const assets: Asset[] = await this.getAssetsPromise();
-                console.log('Got my assets again');
                 this.myAssetsCache = assets;
                 this.myAssetsSubject.next(this.myAssetsCache);
-                
               }
             } else {
+              // This will happen if user disconnects metamask, clear the caches  
               this.connectedAccount = '';
+              this.myAssetsCache = [];
+              this.myAssetsSubject.next(this.myAssetsCache);
             } 
-            resolve(true);
           } catch(e) {
-            reject (e);
+            throw e;
           }
         });
-      } else {
-        resolve(true); // if not needd to initalize then just return true
-      }
-    });
+      //} else {
+      //  resolve(true); // if not needd to initalize then just return true
+      }  
+      return this.web3Service.init();
+
+    //});
   }
 
   private readMetadata(asset: Asset): Promise<Asset> {
@@ -101,6 +101,7 @@ export class AssetsService {
   // Did it this way so only one next so all assets are shown at the same time
   // Otherwise there is a bit of a flickr when the load one at a time which doesn't look good in the UI
   getMyAssets(): Observable<Asset[]> {
+    // If no assets in cache then get them
     if (this.myAssetsCache === []) {
       console.log('Getting new assets', this.myAssetsCache);
       this.getAssetsPromise().then((assets) => {
