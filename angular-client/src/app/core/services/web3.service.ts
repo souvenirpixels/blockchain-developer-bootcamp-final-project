@@ -25,6 +25,18 @@ export class Web3Service {
     return this.accountsObservable.asObservable();
   }
 
+  // Returns a valid address or rejects
+  public checkValidAddress(address: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      try {
+        const validAddress = this.web3.utils.toChecksumAddress(address)
+        resolve(validAddress);
+      } catch(e: any) { 
+        reject('Invalid ethereum address');
+      }
+    });
+  }
+
   public getDisplayAcccount(account: string): string  {
       const l: number = account.length;
       return account.substring(0, 6) + '...' + account.substring(l - 4, l); 

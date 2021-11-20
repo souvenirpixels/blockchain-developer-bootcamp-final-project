@@ -5,9 +5,10 @@ export enum PhotoSizeEnum {
 }
 
 export enum AssetStatusEnum {
-    PENDING = "Pending",
-    MINED = "Mined",
-    ERROR = "Error"
+    NONE = '',
+    PENDING = 'Pending',
+    MINED = 'Mined',
+    ERROR = 'Error'
 }
 
 export class Asset {

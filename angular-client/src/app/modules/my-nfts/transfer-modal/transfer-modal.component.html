@@ -1,0 +1,22 @@
+<div class="modal-content">
+    <div class="modal-header photerloo-modal-danger text-center">
+      <h4 class="modal-title w-100 font-weight-bold">Transfer NFT</h4>
+    </div>
+  
+    <div class="modal-body mx-3">
+        <div *ngIf="errorMessage" class="alert alert-danger mt-2 text-center" role="alert">
+        {{errorMessage}}
+        </div>
+      <p>Enter the NFT transfer address.</p>
+      <div class="md-form">
+        <mdb-icon fas  class="prefix" icon="wallet"></mdb-icon>
+        
+        <input mdbInput type="text" id="transferAddress" [(ngModel)]="transferAddress" class="form-control">
+        <label for="transferAddress">Transfer Address</label>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" mdbBtn color="primary" class="relative waves-light" (click)="handleTransferClick()" mdbWavesEffect>Transfer</button>
+      <button type="button" mdbBtn color="primary" class="relative waves-light" aria-label="Close" (click)="modalRef.hide()" mdbWavesEffect>Cancel</button>
+    </div>
+  </div>

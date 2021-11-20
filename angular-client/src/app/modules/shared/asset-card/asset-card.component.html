@@ -18,7 +18,7 @@
       Transaction pending.
     </div>
     <div *ngIf="showMiningMessages && asset.status === assetStatusEnum.MINED" class="alert alert-success text-center mb-0" role="alert">
-      NFT Created
+      Transaction complete.
     </div>
     <div *ngIf="errorMessage" class="alert alert-danger text-center mb-0" role="alert">
       {{ errorMessage }} 
@@ -47,6 +47,7 @@
                   color="primary" 
                   size="lg" 
                   (click)="burnClick.emit(asset)"
+                  [disabled]="showMiningMessages && asset.status === assetStatusEnum.PENDING"
                   mdbWavesEffect>Burn
           </button>
           <button mdbBtn 
@@ -55,6 +56,7 @@
                   color="primary" 
                   (click)="transferClick.emit(asset)"
                   size="lg" 
+                  [disabled]="showMiningMessages && asset.status === assetStatusEnum.PENDING"
                   mdbWavesEffect>Transfer
           </button>
         </div>

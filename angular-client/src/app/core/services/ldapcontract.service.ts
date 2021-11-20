@@ -72,6 +72,28 @@ export class LDAPContractService {
     });
    }
 
+   async burn(tokenId: number): Promise<number> {
+    await this.init();
+    return new Promise((resolve, reject) => {
+      this.ldapContractInstance.burn(tokenId, {from: this.connectedAccount}).then((resp: any) => {
+        resolve(resp);
+      }).catch((e: any) => {
+        reject(e);
+      });
+    });
+   }
+
+   async transfer(tokenId: number, address: string): Promise<number> {
+    await this.init();
+    return new Promise((resolve, reject) => {
+        this.ldapContractInstance.safeTransferFrom(this.connectedAccount, address, tokenId, {from: this.connectedAccount}).then((resp: any) => {
+          resolve(resp);
+        }).catch((e: any) => {
+          reject(e);
+        });  
+    });
+   }
+
    async tokenOfConnectedAccountByIndex(index: number): Promise<number> {
     await this.init();
     return new Promise((resolve, reject) => {

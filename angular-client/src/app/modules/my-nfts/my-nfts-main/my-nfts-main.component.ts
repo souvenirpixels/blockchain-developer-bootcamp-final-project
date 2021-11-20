@@ -1,6 +1,9 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AssetsService } from 'src/app/core/services/assets.service';
 import { Asset } from 'src/app/core/models/asset.model';
+import { MDBModalRef, MDBModalService } from 'angular-bootstrap-md';
+import { BurnModalComponent } from '../burn-modal/burn-modal.component';
+import { TransferModalComponent } from '../transfer-modal/transfer-modal.component';
 
 @Component({
   selector: 'app-my-nfts-main',
@@ -12,8 +15,9 @@ export class MyNftsMainComponent implements OnInit {
   loading: boolean = false;
   private subscription: any;
   errorMessage: string;
+  modalRef: MDBModalRef;
 
-  constructor(private assetsService: AssetsService, private ref: ChangeDetectorRef) { }
+  constructor(private assetsService: AssetsService, private ref: ChangeDetectorRef, public modalService: MDBModalService) { }
 
   // TODO: Later, right now if you change accounts, there is no loading symbol, can't do it because don't via init, 
   // however, could change init to return a subscription to a "loading" event, then subscribe and have it show or hide the loading
@@ -48,11 +52,37 @@ export class MyNftsMainComponent implements OnInit {
   }
 
   onBurnClick(asset: Asset) {
-    console.log('Clicked burn', asset);
+    let modalOptions = {
+      backdrop: true,
+      keyboard: true,
+      focus: true,
+      show: false,
+      ignoreBackdropClick: true,
+      class: '',
+      containerClass: '',
+      animated: true,
+      data: {
+        tokenId2Burn: asset.id
+      }
+    }
+    this.modalRef = this.modalService.show(BurnModalComponent, modalOptions); 
   }
 
   onTransferClick(asset: Asset) {
-    console.log('Clicked transfer', asset);
+    let modalOptions = {
+      backdrop: true,
+      keyboard: true,
+      focus: true,
+      show: false,
+      ignoreBackdropClick: true,
+      class: '',
+      containerClass: '',
+      animated: true,
+      data: {
+        tokenId2Transfer: asset.id
+      }
+    }
+    this.modalRef = this.modalService.show(TransferModalComponent, modalOptions); 
   }
 
 }

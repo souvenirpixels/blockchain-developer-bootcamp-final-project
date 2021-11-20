@@ -30,7 +30,6 @@ export class AssetsService {
   // This then triggers reading from the blockchain.  However, this takes some time, but if done in the constructor then
   // not possible to do a loading sign via the UI. This init function is used to initalize and a spinny can be used in the UI
   async init(): Promise<any> {
-    //return new Promise((resolve, reject) => {
       if (!this.getAccountSubscription) {
         this.getAccountSubscription = this.web3Service.getAcccount();
         this.getAccountSubscription.subscribe(async (resp: any) => {
@@ -59,8 +58,6 @@ export class AssetsService {
             throw e;
           }
         });
-      //} else {
-      //  resolve(true); // if not needd to initalize then just return true
       }  
       return this.web3Service.init();
 
@@ -86,6 +83,7 @@ export class AssetsService {
     });    
   }
 
+  
   private async getAssetsPromise() {
     let promises: Promise<Asset>[] = [];
     let balance = await this.ldapContractService.balanceOfConnectedAccount();
@@ -103,9 +101,7 @@ export class AssetsService {
   getMyAssets(): Observable<Asset[]> {
     // If no assets in cache then get them
     if (this.myAssetsCache === []) {
-      console.log('Getting new assets', this.myAssetsCache);
       this.getAssetsPromise().then((assets) => {
-        console.log('Got new assets', assets);
         this.myAssetsCache = assets;
         this.myAssetsSubject.next(this.myAssetsCache);
       });
@@ -116,6 +112,81 @@ export class AssetsService {
 
   getPendingAssets(): Observable<Asset[]> {
     return this.pendingAssetsSubject.asObservable();
+  }
+
+  checkAddressValid(address: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      try {
+        this.web3Service.checkValidAddress(address).then((validAddress) =>  {
+          resolve(validAddress);
+        }).catch((e) => {
+          reject(e);
+        });
+      } catch (e) {
+        reject (e);
+      }
+    });
+    
+  }
+
+  transfer(tokenId: number, address:string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const index = this.myAssetsCache.map(function(e) { return e.id; }).indexOf(tokenId);
+
+      if (index===-1) {
+        reject('Unable to find tokenId');
+      }
+      this.myAssetsCache[index].errorMessage = '';
+      this.myAssetsCache[index].status = this.assetStatusEnum.PENDING;
+      this.myAssetsSubject.next(this.myAssetsCache);
+      
+      this.ldapContractService.transfer(tokenId, address).then((resp) => {
+        this.myAssetsCache[index].status = this.assetStatusEnum.MINED;
+        this.myAssetsCache.splice(index, 1);
+        this.myAssetsSubject.next(this.myAssetsCache);
+        resolve(resp);
+      }).catch((e) => {
+          this.myAssetsCache[index].status = this.assetStatusEnum.ERROR;
+          if (e && e.message) {
+            this.myAssetsCache[index].errorMessage = e.message;
+          } else {
+            this.myAssetsCache[index].errorMessage = e;
+          }
+          this.myAssetsSubject.next(this.myAssetsCache);
+          reject(e);  
+      })
+    });
+  }
+
+  burn(tokenId: number): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const index = this.myAssetsCache.map(function(e) { return e.id; }).indexOf(tokenId);
+      if (index === -1) {
+        this.myAssetsCache[index].status = this.assetStatusEnum.ERROR;
+        this.myAssetsCache[index].errorMessage = 'Not found, unable to burn';
+        this.myAssetsSubject.next(this.myAssetsCache);
+      } else {
+        this.myAssetsCache[index].errorMessage = '';
+        this.myAssetsCache[index].status = this.assetStatusEnum.PENDING;
+        this.myAssetsSubject.next(this.myAssetsCache);
+        
+        this.ldapContractService.burn(tokenId).then((resp) => {
+          this.myAssetsCache[index].status = this.assetStatusEnum.MINED;
+          this.myAssetsCache.splice(index, 1);
+          this.myAssetsSubject.next(this.myAssetsCache);
+          resolve(index);
+        }).catch((e) => {
+          this.myAssetsCache[index].status = this.assetStatusEnum.ERROR;
+          if (e && e.message) {
+            this.myAssetsCache[index].errorMessage = e.message;
+          } else {
+            this.myAssetsCache[index] = e;
+          }
+          this.myAssetsSubject.next(this.myAssetsCache);
+          reject(e);
+        });
+      }
+    });
   }
 
   mintAsset(tokenURI: string, assetURI: string, price: number): Promise<Asset> {
