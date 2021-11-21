@@ -1,11 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Web3Service } from './web3.service';
 import { Asset } from '../models/asset.model';
-import { Observable, ReplaySubject, Subject } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
 import BN from 'bn.js';
-import { map } from 'rxjs/operators';
-
 
 declare let require: any;
 const LDAP_artifacts = require('../../contracts/UDALProtocol.json');
@@ -15,14 +11,9 @@ const LDAP_artifacts = require('../../contracts/UDALProtocol.json');
 })
 export class LDAPContractService {
   private ldapContractInstance: any;
-  private assetListCache: Asset[] = [];
-  private assetListSubject: Subject<Asset[]> = new ReplaySubject<Asset[]>();
-
   connectedAccount: string;
 
-  constructor(private web3Service: Web3Service, private http: HttpClient) { }
-
-   private initializationPromise: Promise<any>;
+  constructor(private web3Service: Web3Service) { }
 
    private async doInit() {
     this.web3Service.getAcccount().subscribe(resp => {
@@ -49,7 +40,7 @@ export class LDAPContractService {
     await this.init();
     return new Promise((resolve, reject) => {
       if (this.connectedAccount) {
-        this.ldapContractInstance.mint(asset.tokenURI, asset.assetURI, asset.price*100, this.connectedAccount, {from: this.connectedAccount}).then((ret:any) => {
+        this.ldapContractInstance.mint(asset.tokenURI, asset.assetURI, new BN(this.web3Service.toWei(asset.price.toString())), this.connectedAccount, {from: this.connectedAccount}).then((ret:any) => {
           asset.owner = this.connectedAccount;
           resolve(asset);
         }).catch((e:any) => {
@@ -71,6 +62,40 @@ export class LDAPContractService {
       });
     });
    }
+
+   async totalSupply(): Promise<number> {
+    await this.init();
+    return new Promise((resolve, reject) => {
+      this.ldapContractInstance.totalSupply().then((balanceBN: BN) => {
+        resolve(balanceBN.toNumber());
+      }).catch((e: any) => {
+        reject(e);
+      });
+    });
+  }
+
+  async tokenByIndex(index: number): Promise<number> {
+    await this.init();
+    return new Promise((resolve, reject) => {
+      this.ldapContractInstance.tokenByIndex(index).then((tokenIdBN: BN) => {
+        resolve(tokenIdBN.toNumber());
+      }).catch((e: any) => {
+        reject(e);
+      });
+    });
+  }
+
+  async purchaseLicence(tokenId: number, price: number) {
+    await this.init();
+    return new Promise((resolve, reject) => {
+      const weiPrice = new BN(this.web3Service.toWei(price.toString()));
+      this.ldapContractInstance.purchaseLicence(tokenId, {from: this.connectedAccount, value: weiPrice}).then((resp: any) => {
+        resolve(resp);
+      }).catch((e: any) => {
+        reject(e);
+      });
+    });
+  }
 
    async burn(tokenId: number): Promise<number> {
     await this.init();
@@ -109,46 +134,12 @@ export class LDAPContractService {
     await this.init();
     return new Promise((resolve, reject) => {
       this.ldapContractInstance.assetInfo(index).then((asset: any) => {
-        let newAsset: Asset = new Asset(asset.URI, '', asset.price.toNumber() / 100, asset.owner, index);
+        const ethPrice: number = +this.web3Service.fromWei(asset.price.toString());
+        let newAsset: Asset = new Asset(asset.URI, '', ethPrice, asset.owner, index);
         resolve(newAsset);
       }).catch((e: any) => {
         reject(e);
       });
     });
-   }
-
-   search(): Observable <Asset[]> {
-    this.init().then(() => {
-      this.ldapContractInstance.totalSupply().then((totalSupplyBN: BN) => {
-        const totalSupply = totalSupplyBN.toNumber();
-  
-        this.assetListCache = []; // Blank out cache so can be reloaded
-        for (let t=1; t <= totalSupply; ++t) {
-          var tBN = new BN(t);
-          this.ldapContractInstance.assetInfo(tBN).then((a: any) => {
-            let newAsset: Asset = new Asset(a.URI, '', a.price.toNumber() / 100, a.owner, t);
-            
-            this.http.get<Asset>(a.URI)
-            .pipe(map(response => {
-                newAsset.setTokenURIData(response);
-                this.assetListCache.push(newAsset);
-                this.assetListSubject.next(this.assetListCache);
-            })).subscribe(
-              data => { },
-              error => {
-                if (error.message) {
-                  newAsset.errorMessage = error.message;
-                } else {
-                  newAsset.errorMessage = error;
-                }
-                this.assetListCache.push(newAsset);
-                this.assetListSubject.next(this.assetListCache);
-              }
-            );  
-          }); 
-        }
-      });
-    });
-    return this.assetListSubject.asObservable();
    }
 }

@@ -37,9 +37,11 @@
       <mdb-card-text *ngIf="showDetails">
         <p>{{ asset.status }}</p>
         <p>{{ asset.description }}</p>
+        <p *ngIf="showOwner" class="mb-0"><strong>Owner: </strong>{{ asset.owner }}</p>
         <p *ngIf="showTokenId" class="mb-0"><strong>Token ID: </strong>{{ asset.id }}</p>
         <p *ngIf="showPrice" class="mb-0"><strong>Price: </strong>{{ asset.price }} ETH</p>
         <p *ngIf="showTokenURI" class="mb-0"><strong>Token URI: </strong>{{ asset.tokenURI }}</p>
+        
         <div class="row justify-content-center">
           <button mdbBtn 
                   *ngIf="showBurnTransferButtons" 

@@ -18,6 +18,9 @@ export class AssetsService {
   private myAssetsSubject: Subject<Asset[]> = new Subject<Asset[]>();
   private myAssetsCache: Asset[] = [];
 
+  private allAssetsSubject: Subject<Asset[]> = new Subject<Asset[]>();
+  private allAssetsCache: Asset[] = [];
+
   private connectedAccount: string;
 
   private getAccountSubscription: any;
@@ -60,8 +63,6 @@ export class AssetsService {
         });
       }  
       return this.web3Service.init();
-
-    //});
   }
 
   private readMetadata(asset: Asset): Promise<Asset> {
@@ -83,7 +84,8 @@ export class AssetsService {
     });    
   }
 
-  
+  // Did it this way so only one next so all assets are shown at the same time
+  // Otherwise there is a bit of a flickr when the load one at a time which doesn't look good in the UI
   private async getAssetsPromise() {
     let promises: Promise<Asset>[] = [];
     let balance = await this.ldapContractService.balanceOfConnectedAccount();
@@ -96,11 +98,9 @@ export class AssetsService {
     return Promise.all(promises);
   }
 
-  // Did it this way so only one next so all assets are shown at the same time
-  // Otherwise there is a bit of a flickr when the load one at a time which doesn't look good in the UI
   getMyAssets(): Observable<Asset[]> {
     // If no assets in cache then get them
-    if (this.myAssetsCache === []) {
+    if (this.myAssetsCache.length === 0) {
       this.getAssetsPromise().then((assets) => {
         this.myAssetsCache = assets;
         this.myAssetsSubject.next(this.myAssetsCache);
@@ -109,6 +109,35 @@ export class AssetsService {
 
     return this.myAssetsSubject.pipe(startWith(this.myAssetsCache));
   }
+
+  private async getAllAssetsPromise() {
+    let promises: Promise<Asset>[] = [];
+    let totalSupply = await this.ldapContractService.totalSupply();
+    console.log('totalSupply=', totalSupply);
+    for (let i=0; i < totalSupply; ++i) {
+      let tokenId = await this.ldapContractService.tokenByIndex(i);
+      let asset = await this.ldapContractService.assetInfo(tokenId);
+      promises.push(this.readMetadata(asset));
+    }
+
+    return Promise.all(promises);
+
+  }
+
+  getAllAssets(): Observable<Asset[]> {
+    // If no assets in cache then get them
+    if (this.allAssetsCache.length === 0) {
+      this.getAllAssetsPromise().then((assets) => {
+        this.allAssetsCache = assets;
+        this.allAssetsSubject.next(this.allAssetsCache);
+      });
+    }
+    return this.allAssetsSubject.pipe(startWith(this.allAssetsCache));
+  }
+
+   purchaseLicence(asset: Asset): Promise<any> {
+    return this.ldapContractService.purchaseLicence(asset.id!, asset.price);
+   }
 
   getPendingAssets(): Observable<Asset[]> {
     return this.pendingAssetsSubject.asObservable();
@@ -131,7 +160,7 @@ export class AssetsService {
 
   transfer(tokenId: number, address:string): Promise<any> {
     return new Promise((resolve, reject) => {
-      const index = this.myAssetsCache.map(function(e) { return e.id; }).indexOf(tokenId);
+      let index = this.myAssetsCache.map(function(e) { return e.id; }).indexOf(tokenId);
 
       if (index===-1) {
         reject('Unable to find tokenId');
@@ -141,11 +170,13 @@ export class AssetsService {
       this.myAssetsSubject.next(this.myAssetsCache);
       
       this.ldapContractService.transfer(tokenId, address).then((resp) => {
+        index = this.myAssetsCache.map(function(e) { return e.id; }).indexOf(tokenId); // could change if others burnedsince index read
         this.myAssetsCache[index].status = this.assetStatusEnum.MINED;
         this.myAssetsCache.splice(index, 1);
         this.myAssetsSubject.next(this.myAssetsCache);
         resolve(resp);
       }).catch((e) => {
+          index = this.myAssetsCache.map(function(e) { return e.id; }).indexOf(tokenId); // could change if others burnedsince index read
           this.myAssetsCache[index].status = this.assetStatusEnum.ERROR;
           if (e && e.message) {
             this.myAssetsCache[index].errorMessage = e.message;
@@ -160,7 +191,7 @@ export class AssetsService {
 
   burn(tokenId: number): Promise<any> {
     return new Promise((resolve, reject) => {
-      const index = this.myAssetsCache.map(function(e) { return e.id; }).indexOf(tokenId);
+      let index = this.myAssetsCache.map(function(e) { return e.id; }).indexOf(tokenId);
       if (index === -1) {
         this.myAssetsCache[index].status = this.assetStatusEnum.ERROR;
         this.myAssetsCache[index].errorMessage = 'Not found, unable to burn';
@@ -169,13 +200,15 @@ export class AssetsService {
         this.myAssetsCache[index].errorMessage = '';
         this.myAssetsCache[index].status = this.assetStatusEnum.PENDING;
         this.myAssetsSubject.next(this.myAssetsCache);
-        
+
         this.ldapContractService.burn(tokenId).then((resp) => {
+          index = this.myAssetsCache.map(function(e) { return e.id; }).indexOf(tokenId); // could change if others burnedsince index read
           this.myAssetsCache[index].status = this.assetStatusEnum.MINED;
           this.myAssetsCache.splice(index, 1);
           this.myAssetsSubject.next(this.myAssetsCache);
           resolve(index);
         }).catch((e) => {
+          index = this.myAssetsCache.map(function(e) { return e.id; }).indexOf(tokenId); // could change if others burnedsince index read
           this.myAssetsCache[index].status = this.assetStatusEnum.ERROR;
           if (e && e.message) {
             this.myAssetsCache[index].errorMessage = e.message;
@@ -191,7 +224,7 @@ export class AssetsService {
 
   mintAsset(tokenURI: string, assetURI: string, price: number): Promise<Asset> {
     return new Promise((resolve, reject) => {
-      let asset = new Asset(tokenURI, assetURI, price*100);
+      let asset = new Asset(tokenURI, assetURI, price);
       
       this.readMetadata(asset).then((resp) => {
         asset = resp;

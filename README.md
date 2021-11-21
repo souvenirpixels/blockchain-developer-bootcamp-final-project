@@ -103,10 +103,11 @@ The following features may be added to project depending based on time available
         return "https://metadata-url.com/my-metadata";
     }
 ```
-1. Decide on a standard for how metadata is stored that is compatible with the ERC721 Metadata JSON Schema standard
 1. Circuit breaker to stop use of contract if bugs (Pauser), use access control to only allow those with access to pause.
 1. Change the licence to be an ERC1155 NFT token
 1. Ability to easily tell if a user has purchased a licence.
+1. Add search feature for finding photos to purchase
+1. Add ability to more efficiently list the licences purchased by a user
 1. Ability to accept different cryptocurrencies / tokens for licence purchase (for example: DAI, USDC, USDT)
 1. Ability to share revenue from a asset sale with different people at specific percentages.
 1. Ability to search a collection of assets for sale based on asset metadata.

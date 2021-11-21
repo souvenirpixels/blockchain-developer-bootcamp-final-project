@@ -14,6 +14,7 @@ export class AssetCardComponent implements OnInit {
   @Input() showDetails: boolean = true;
   @Input() showSpinny: boolean = false;
   @Input() showTokenId: boolean = false;
+  @Input() showOwner: boolean = false;
   @Input() showPrice: boolean = false;
   @Input() showTokenURI: boolean = false;
   @Input() showBurnTransferButtons: boolean = false;

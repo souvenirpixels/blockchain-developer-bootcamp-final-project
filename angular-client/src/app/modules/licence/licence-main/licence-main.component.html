@@ -1,16 +1,40 @@
 <app-header></app-header>
 <div class="container-fluid pt-5">
-  <div class="row justify-content-center">
+
+  <div  class="row justify-content-center">
     <div class="col-xl-10 col-lg-10 col-sm-12 mb-3">
-          <h3 class="text-center">
+      <mdb-card>
+        <mdb-card-header class="text-center py-2">
+          <h3>
             <strong>Licence A Photo</strong>
           </h3>
-          <button mdbBtn color="primary" class="z-depth-0 my-4 waves-effect  mx-auto d-block"  (click)="onSearchClick()"  mdbWavesEffect>Search</button>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-xs-12" *ngFor="let a of assetList" style="padding: 5px;">
-      <app-asset-card [asset]="a"></app-asset-card>
+        </mdb-card-header>
+        <mdb-card-body class="px-lg-5 pt-0">
+          <div class="row justify-content-center" *ngIf="loading">            
+              <div class="spinner-border text-primary" style="width: 5rem; height: 5rem;" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+          </div> 
+          <div *ngIf="errorMessage" class="alert alert-danger mt-2 text-center" role="alert">
+            {{errorMessage }}
+          </div>
+          <div class="row" *ngIf="!loading" >
+            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-xs-12" *ngFor="let a of allAssets" style="padding: 5px;">
+              <app-asset-card [asset]="a" 
+                              [buyButton]="true"
+                              [showTokenId]="true"
+                              [showPrice]="true"
+                              [showTokenURI]="true"
+                              [showBurnTransferButtons]="false"
+                              [showMiningMessages]="false"
+                              [showOwner]="true"
+                              (buyLicenceClick)="onBuyLicenceClick(a)">
+              </app-asset-card>
+            </div>
+          </div>
+   
+        </mdb-card-body>
+      </mdb-card>      
     </div>
   </div>
 </div>

@@ -25,6 +25,14 @@ export class Web3Service {
     return this.accountsObservable.asObservable();
   }
 
+  public toWei(n: string): string {
+    return this.web3.utils.toWei(n.toString());
+  }
+
+  public fromWei(n: string): string {
+    return this.web3.utils.fromWei(n.toString());
+  }
+
   // Returns a valid address or rejects
   public checkValidAddress(address: string): Promise<string> {
     return new Promise((resolve, reject) => {
