@@ -64,13 +64,19 @@ contract UDALProtocol is ERC721("Universal Digital Asset Licencing NFT", "UDALNF
       emit LicencePurchased(_assetInfo[tokenId].assetURI, msg.value);
   }
 
+  /// @notice Restricts access to users who have purchaed a licence
+  /// @param tokenId Id of the asset requesting access to
+  modifier hasLicence(uint256 tokenId) {
+    require(_assetInfo[tokenId].purchasedLicences[msg.sender], "Has not been purchased");
+    _;
+  }
+
   /// @notice The metadata Uniform Resource Identifier (URI) for a given asset
   /// @dev Throws if asset with ID is not valid. Also throws if the caller hasn't purchased the asset ID.
   /// @param tokenId Id of the asset
   /// @return assetURI of the full size asset
-  function assetURI(uint256 tokenId) external view returns (string memory) {
+  function assetURI(uint256 tokenId) hasLicence(tokenId) external view returns (string memory) {
     require(_exists(tokenId), "assetURI query for nonexistent tokenId");
-    require(_assetInfo[tokenId].purchasedLicences[msg.sender], "Has not been purchased");
     return _assetInfo[tokenId].assetURI;
   }
 
@@ -79,17 +85,17 @@ contract UDALProtocol is ERC721("Universal Digital Asset Licencing NFT", "UDALNF
     return super.tokenURI(tokenId);
   }
 
-  // As ERC721, ERC721Enumerable, and include _beforeTokenTransfer we need to override all
+  // The ERC721.sol, and ERC721Enumerable.sol openzeppelin contracts, both include _beforeTokenTransfer so we need to override
   function _beforeTokenTransfer(address from, address to, uint256 amount) internal override(ERC721, ERC721Enumerable) {
     super._beforeTokenTransfer(from, to, amount);
   }
 
-  // As ERC721 and ERC721Enumerable include supportsInterface we need to override both.
+  // The ERC721.sol, and ERC721Enumerable.sol openzeppelin contracts, both includesupportsInterface so we need to override
   function supportsInterface(bytes4 interfaceId) public view override(ERC721, ERC721Enumerable) returns (bool) {
         return super.supportsInterface(interfaceId);
   }
 
-  // As ERC721 and ERC721URIStorage include supportsInterface we need to override both.
+  // The ERC721.sol, and ERC721URIStorage.sol openzeppelin contracts, both include _burn so we need to override
   function _burn(uint256 tokenId) internal override (ERC721, ERC721URIStorage)  {
     super._burn(tokenId);
   }
