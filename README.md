@@ -9,6 +9,13 @@ TODO - Insert link here
 
 ## Getting Started Running Locally
 
+### Directory Structure
+- angular-client - The Angular front end
+- build - built contracts
+- contracts - Smart contract solidity code
+- migrations - Migration scripts
+- test - Smart contract test cases
+
 ### Prerequisites
 - Node.js >= v14
 - npm >= 6.14
@@ -22,17 +29,9 @@ Get a local version of the repo.
 git clone https://github.com/souvenirpixels/blockchain-developer-bootcamp-final-project.git
 ```
 
-### Directory Structure
-- angular-client - The Angular front end
-- build - built contracts
-- contracts - Smart contract solidity code
-- migrations - Migration scripts
-- test - Smart contract test cases
-
 ### Smart contracts
 Run the following commands to deploy contracts to local ganache instance and test.
 ```
-
 cd blockchain-developer-bootcamp-final-project
 npm install
 truffle compile
@@ -147,17 +146,9 @@ Licencor should be able to purchase a licence to use the file commercially
 
 ## Future Roadmap
 The following features may be added to project depending based on time available before due date.
-1. Add a contractURI method to be used by [Opensea](https://docs.opensea.io/docs/contract-level-metadata)
-```
-    function contractURI() public view returns (string memory) {
-        return "https://metadata-url.com/my-metadata";
-    }
-```
 1. Circuit breaker to stop use of contract if bugs (Pauser), use access control to only allow those with access to pause.
-1. Change the licence to be an ERC1155 NFT token
-1. Ability to easily tell if a user has purchased a licence.
-1. Add search feature for finding photos to purchase
-1. Add ability to more efficiently list the licences purchased by a user
+1. Change the licence to be an ERC1155 NFT token.  This will allow the licences to be searched and listed more efficiently.
+1. Add search feature for finding photos to purchase.  This will require a third party search service like [the graph](https://thegraph.com/en/).
 1. Ability to accept different cryptocurrencies / tokens for licence purchase (for example: DAI, USDC, USDT)
 1. Ability to share revenue from a asset sale with different people at specific percentages.
 1. Ability to search a collection of assets for sale based on asset metadata.
@@ -168,3 +159,9 @@ The following features may be added to project depending based on time available
 1. Volume discounts for purchasing many assets via an ERC20 token.
 1. Ability to purchase different types of licences (standard vs extended, etc)
 1. Ability to check if assetURI is a valid file before purchase
+1. Add a contractURI method to be used by [Opensea](https://docs.opensea.io/docs/contract-level-metadata)
+```
+    function contractURI() public view returns (string memory) {
+        return "https://metadata-url.com/my-metadata";
+    }
+```
