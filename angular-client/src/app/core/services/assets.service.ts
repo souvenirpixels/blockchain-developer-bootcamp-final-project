@@ -3,14 +3,15 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
-import { Asset, AssetStatusEnum } from '../models/asset.model';
+import { Asset, AssetStatusEnum, LicenceStatusEnum } from '../models/asset.model';
 import { LDAPContractService } from './ldapcontract.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AssetsService {
-  private assetStatusEnum = AssetStatusEnum;
+  public assetStatusEnum = AssetStatusEnum;
+  public licenceStatusEnum = LicenceStatusEnum;;
 
   private pendingAssetsSubject: Subject<Asset[]> = new ReplaySubject<Asset[]>();
   private pendingAssetsCache: Asset[] = [];
@@ -113,10 +114,20 @@ export class AssetsService {
   private async getAllAssetsPromise() {
     let promises: Promise<Asset>[] = [];
     let totalSupply = await this.ldapContractService.totalSupply();
-    console.log('totalSupply=', totalSupply);
+    
     for (let i=0; i < totalSupply; ++i) {
       let tokenId = await this.ldapContractService.tokenByIndex(i);
       let asset = await this.ldapContractService.assetInfo(tokenId);
+      try {
+        let assetURI = await this.ldapContractService.assetURI(tokenId);
+        asset.licenceStatus = this.licenceStatusEnum.LICENCED;
+        asset.assetURI = assetURI;
+      } catch {
+        // TODO: This is very hacky, future version will use an Enumerable ERC1155 token for licences so will be much easier to traverse ERC1155 contract
+        console.log('Failed to get assetURI', asset);
+      }
+      
+      
       promises.push(this.readMetadata(asset));
     }
 
@@ -136,7 +147,37 @@ export class AssetsService {
   }
 
    purchaseLicence(asset: Asset): Promise<any> {
-    return this.ldapContractService.purchaseLicence(asset.id!, asset.price);
+    return new Promise((resolve, reject) => {
+      let tokenId = asset.id!;
+      let index = this.allAssetsCache.map(function(e) { return e.id; }).indexOf(tokenId);
+
+      if (index===-1) {
+        reject('Unable to find tokenId');
+      }
+      this.allAssetsCache[index].errorMessage = '';
+      this.allAssetsCache[index].licenceStatus = this.licenceStatusEnum.PENDING;
+      this.allAssetsSubject.next(this.allAssetsCache);
+
+      this.ldapContractService.purchaseLicence(tokenId, asset.price).then((resp) => {
+        // Update the allNFTs list
+        this.getAllAssetsPromise().then((assets) => {
+          this.allAssetsCache = assets;
+          this.allAssetsSubject.next(this.allAssetsCache);
+        });        
+        resolve(resp);
+      }).catch((e) => {
+        index = this.allAssetsCache.map(function(e) { return e.id; }).indexOf(tokenId); // could change if others burnedsince index read
+        this.allAssetsCache[index].licenceStatus = this.licenceStatusEnum.ERROR
+        if (e && e.message) {
+          this.allAssetsCache[index].errorMessage = e.message;
+        } else {
+          this.allAssetsCache[index].errorMessage = e;
+        }
+        this.myAssetsSubject.next(this.allAssetsCache);
+        reject(e);  
+      });
+  
+    });
    }
 
   getPendingAssets(): Observable<Asset[]> {

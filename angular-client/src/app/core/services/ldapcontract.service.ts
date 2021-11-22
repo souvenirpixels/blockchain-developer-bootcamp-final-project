@@ -74,6 +74,17 @@ export class LDAPContractService {
     });
   }
 
+  async assetURI(tokenId: number): Promise<string> {
+    await this.init();
+    return new Promise((resolve, reject) => {
+      this.ldapContractInstance.assetURI(tokenId, { from: this.connectedAccount }).then((URI: string) => {
+        resolve(URI);
+      }).catch((e: any) => {
+        reject(e);
+      });
+    });
+  }
+
   async tokenByIndex(index: number): Promise<number> {
     await this.init();
     return new Promise((resolve, reject) => {

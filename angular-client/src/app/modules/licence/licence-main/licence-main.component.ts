@@ -1,8 +1,6 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';;
 import { Asset } from 'src/app/core/models/asset.model';
 import { AssetsService } from 'src/app/core/services/assets.service';
-import { LDAPContractService } from 'src/app/core/services/ldapcontract.service';
 
 @Component({
   selector: 'app-licence-main',
@@ -27,6 +25,7 @@ export class LicenceMainComponent implements OnInit {
     });
     
     this.subscription = this.assetsService.getAllAssets().subscribe((resp: Asset[]) => {
+      console.log('Got new all assets', resp);
       this.errorMessage = ''; // Clear error messages
 
       this.allAssets = [...resp]; // Clone the myAssets array

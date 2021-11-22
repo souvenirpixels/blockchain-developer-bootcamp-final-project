@@ -4,7 +4,7 @@
       <mdb-card-img *ngIf="imageURL" src="{{ imageURL }}" alt="Card image cap"></mdb-card-img>
       <mdb-card-img *ngIf="!imageURL" src="/assets/broken-image.png" alt="Card image cap"></mdb-card-img>
       <!-- img src="https://mdbootstrap.com/img/Photos/Others/nature-sm.jpg" class="img-fluid" alt="" -->
-      <div *ngIf="showSpinny || asset.status === assetStatusEnum.PENDING" class="mask flex-center rgba-black-light">
+      <div *ngIf="showSpinny || asset.status === assetStatusEnum.PENDING || asset.licenceStatus === licenceStatusEnum.PENDING" class="mask flex-center rgba-black-light">
         <div class="spinner-border text-white" style="width: 5rem; height: 5rem;" role="status">
           <span class="sr-only">Loading...</span>
         </div>
@@ -14,12 +14,18 @@
       </div>
       
     </div>
+
     <div *ngIf="showMiningMessages && asset.status === assetStatusEnum.PENDING" class="alert alert-success text-center mb-0" role="alert">
       Transaction pending.
     </div>
     <div *ngIf="showMiningMessages && asset.status === assetStatusEnum.MINED" class="alert alert-success text-center mb-0" role="alert">
       Transaction complete.
     </div>
+
+    <div *ngIf="showLicencingMessages && asset.licenceStatus === licenceStatusEnum.PENDING" class="alert alert-success text-center mb-0" role="alert">
+      Licence purchase pending.
+    </div>
+
     <div *ngIf="errorMessage" class="alert alert-danger text-center mb-0" role="alert">
       {{ errorMessage }} 
     </div>
@@ -63,15 +69,38 @@
           </button>
         </div>
         <button mdbBtn 
-                *ngIf="buyButton" 
+                *ngIf="buyButton && !(asset.licenceStatus === licenceStatusEnum.LICENCED)" 
                 type="button" 
                 color="primary"
                 (click)="buyLicenceClick.emit(asset)" 
                 size="lg" 
                 class="mx-auto d-block" 
-                [disabled]="errorMessage" 
+                [disabled]="errorMessage || asset.licenceStatus === licenceStatusEnum.PENDING" 
                 mdbWavesEffect>Buy Licence ({{ asset.price }} ETH)
         </button>
+        <button mdbBtn 
+          *ngIf="buyButton && asset.licenceStatus === licenceStatusEnum.LICENCED" 
+          type="button" 
+          color="primary"
+          (click)="buyLicenceClick.emit(asset)" 
+          size="lg" 
+          class="mx-auto d-block" 
+          disabled
+          mdbWavesEffect>Already licenced
+        </button>
+
+        <!-- TODO: Make this save as a file instead of opening in a new window-->
+        <a href="{{asset.getAssetSrc()}}" target="_blank" download="photo.jpg">
+          <button mdbBtn 
+            *ngIf="showDownloadButton && asset.assetURI" 
+            type="button" 
+            color="primary"
+            (click)="downloadClick.emit(asset)" 
+            size="lg" 
+            class="mx-auto d-block" 
+            mdbWavesEffect>Download File
+        </button>
+        </a>
 
       </mdb-card-text>      
     </mdb-card-body>

@@ -11,6 +11,13 @@ export enum AssetStatusEnum {
     ERROR = 'Error'
 }
 
+export enum LicenceStatusEnum {
+    NONE = '',
+    PENDING = 'Pending',
+    LICENCED = 'Licenced',
+    ERROR = 'Error'
+}
+
 export class Asset {
     id?: number;
     tokenURI: string;
@@ -33,27 +40,36 @@ export class Asset {
     usage: string;
     number_of_people: number;
     status: AssetStatusEnum;
+    licenceStatus: LicenceStatusEnum;
 
-    getPhotoSrc(size: PhotoSizeEnum): string {
-        // TODO: Implement the photoSizeEnum properly
-        let imageURI: string;
+    private createURL(a: string) {
+        let imageURI = a;
         let retVal: string = '';
         let validPrefixes = ["http", "https", "ipfs", "ar"];
-        if (!this.image) {
-            throw new Error('Image URL not available.');
-        } else {
-            imageURI = this.image;
-        }
-
-        if (!validPrefixes.some(v => imageURI.substr(0, imageURI.indexOf('://')).includes(v))) {
-            throw new Error('Invalid imageURI prefix');
-        } else if (imageURI.substr(0, imageURI.indexOf('://')) === 'ipfs') {
+        
+        // TODO: Should show error if invalid URL, this was working but then had issues, fix later
+        //if (!validPrefixes.some(v => imageURI.substr(0, imageURI.indexOf('://')).includes(v))) {
+        //    throw new Error('Invalid imageURI prefix ' + imageURI);
+        //} else 
+        if (imageURI.substr(0, imageURI.indexOf('://')) === 'ipfs') {
             retVal = 'https://dweb.link/ipfs/' + imageURI.split('://')[1];;
         } else if (imageURI.substr(0, imageURI.indexOf('://')) === 'http' || imageURI.substr(0, imageURI.indexOf('://')) === 'https') {
             retVal = imageURI;
         }
 
         return retVal;
+    }
+
+    getPhotoSrc(size: PhotoSizeEnum): string {
+        // TODO: Implement the photoSizeEnum properly
+        if (!this.image) {
+            throw new Error('Image URL not available.');
+        }
+        console.log('sending', this.image);
+        return this.createURL(this.image);
+    }
+    getAssetSrc(): string {
+        return this.createURL(this.assetURI);
     }
 
     setTokenURIData(tokenURIData: any) {

@@ -67,7 +67,7 @@ contract UDALProtocol is ERC721("Universal Digital Asset Licencing NFT", "UDALNF
   /// @notice The metadata Uniform Resource Identifier (URI) for a given asset
   /// @dev Throws if asset with ID is not valid. Also throws if the caller hasn't purchased the asset ID.
   /// @param tokenId Id of the asset
-  /// @return assetURI of the fill size asset
+  /// @return assetURI of the full size asset
   function assetURI(uint256 tokenId) external view returns (string memory) {
     require(_exists(tokenId), "assetURI query for nonexistent tokenId");
     require(_assetInfo[tokenId].purchasedLicences[msg.sender], "Has not been purchased");

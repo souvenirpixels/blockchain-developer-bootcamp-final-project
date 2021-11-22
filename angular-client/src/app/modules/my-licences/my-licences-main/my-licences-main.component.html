@@ -1,6 +1,7 @@
 <app-header></app-header>
 <div class="container-fluid pt-5">
-  <div class="row justify-content-center">
+
+  <div  class="row justify-content-center">
     <div class="col-xl-10 col-lg-10 col-sm-12 mb-3">
       <mdb-card>
         <mdb-card-header class="text-center py-2">
@@ -9,9 +10,30 @@
           </h3>
         </mdb-card-header>
         <mdb-card-body class="px-lg-5 pt-0">
-
-            <p>TODO</p>
-          <!-- Form -->
+          <div class="row justify-content-center" *ngIf="loading">            
+              <div class="spinner-border text-primary" style="width: 5rem; height: 5rem;" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+          </div> 
+          <div *ngIf="errorMessage" class="alert alert-danger mt-2 text-center" role="alert">
+            {{errorMessage }}
+          </div>
+          <div class="row" *ngIf="!loading" >
+            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-xs-12" *ngFor="let a of allAssets" style="padding: 5px;">
+              <app-asset-card [asset]="a" 
+                              [buyButton]="false"
+                              [showTokenId]="true"
+                              [showPrice]="false"
+                              [showTokenURI]="false"
+                              [showBurnTransferButtons]="false"
+                              [showMiningMessages]="false"
+                              [showOwner]="false"
+                              [showLicencingMessages]="true"
+                              [showDownloadButton]="true">
+              </app-asset-card>
+            </div>
+          </div>
+   
         </mdb-card-body>
       </mdb-card>      
     </div>

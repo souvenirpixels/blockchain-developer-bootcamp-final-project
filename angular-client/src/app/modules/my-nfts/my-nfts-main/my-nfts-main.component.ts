@@ -17,7 +17,9 @@ export class MyNftsMainComponent implements OnInit {
   errorMessage: string;
   modalRef: MDBModalRef;
 
-  constructor(private assetsService: AssetsService, private ref: ChangeDetectorRef, public modalService: MDBModalService) { }
+  constructor(private assetsService: AssetsService, 
+              private ref: ChangeDetectorRef, 
+              public modalService: MDBModalService) { }
 
   // TODO: Later, right now if you change accounts, there is no loading symbol, can't do it because don't via init, 
   // however, could change init to return a subscription to a "loading" event, then subscribe and have it show or hide the loading
