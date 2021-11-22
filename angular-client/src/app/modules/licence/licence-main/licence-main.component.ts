@@ -1,4 +1,6 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';;
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';import { of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+;
 import { Asset } from 'src/app/core/models/asset.model';
 import { AssetsService } from 'src/app/core/services/assets.service';
 
@@ -25,12 +27,11 @@ export class LicenceMainComponent implements OnInit {
     });
     
     this.subscription = this.assetsService.getAllAssets().subscribe((resp: Asset[]) => {
-      console.log('Got new all assets', resp);
       this.errorMessage = ''; // Clear error messages
 
       this.allAssets = [...resp]; // Clone the myAssets array
       if (resp.length === 0) {
-        this.errorMessage = 'No NFTs found.' 
+        this.errorMessage = 'No NFTs found.  You may need to connect your Metamask wallet.' 
       }
       
       this.loading = false;

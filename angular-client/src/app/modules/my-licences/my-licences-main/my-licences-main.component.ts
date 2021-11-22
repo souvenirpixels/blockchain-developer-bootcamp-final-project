@@ -28,13 +28,13 @@ export class MyLicencesMainComponent implements OnInit {
     
     this.subscription = this.assetsService.getAllAssets().pipe(
       map(assets => assets.filter(asset => asset.licenceStatus === this.assetsService.licenceStatusEnum.LICENCED)),
-      filter(assets => assets && assets.length > 0)
+      filter(assets => assets !== undefined)
     ).subscribe((resp: Asset[]) => {
       this.errorMessage = ''; // Clear error messages
 
       this.allAssets = [...resp]; // Clone the myAssets array
       if (resp.length === 0) {
-        this.errorMessage = 'No NFTs found.' 
+        this.errorMessage = 'No NFTs found.  You may need to connect your Metamask wallet.' 
       }
       
       this.loading = false;

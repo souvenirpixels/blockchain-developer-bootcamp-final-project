@@ -35,6 +35,7 @@ export class AssetsService {
   // not possible to do a loading sign via the UI. This init function is used to initalize and a spinny can be used in the UI
   async init(): Promise<any> {
       if (!this.getAccountSubscription) {
+        console.log('trying to get account subsription');
         this.getAccountSubscription = this.web3Service.getAcccount();
         this.getAccountSubscription.subscribe(async (resp: any) => {
           try {
@@ -48,9 +49,13 @@ export class AssetsService {
       
               // Reload cache for new user
               if (this.myAssetsCache !== []) {
-                const assets: Asset[] = await this.getAssetsPromise();
-                this.myAssetsCache = assets;
+                this.myAssetsCache = await this.getAssetsPromise();;
                 this.myAssetsSubject.next(this.myAssetsCache);
+              }
+
+              if (this.allAssetsCache !== []) {
+                this.allAssetsCache = await this.getAllAssetsPromise();;
+                this.allAssetsSubject.next(this.allAssetsCache);
               }
             } else {
               // This will happen if user disconnects metamask, clear the caches  
@@ -265,6 +270,9 @@ export class AssetsService {
 
   mintAsset(tokenURI: string, assetURI: string, price: number): Promise<Asset> {
     return new Promise((resolve, reject) => {
+      if (!this.connectedAccount) {
+        reject('Please connect metamask account to mint.');
+      }
       let asset = new Asset(tokenURI, assetURI, price);
       
       this.readMetadata(asset).then((resp) => {
@@ -297,6 +305,7 @@ export class AssetsService {
           reject (e);
         });
       }).catch((e) => {
+        console.log('Unable to mint', e);
         reject (e);
       })
     });

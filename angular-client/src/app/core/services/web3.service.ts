@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Observable, Subject, ReplaySubject, pipe } from 'rxjs';
-import { map } from 'rxjs/operators'
+import {Observable, ReplaySubject } from 'rxjs';
 declare let require: any;
 const Web3 = require('web3');
 const contract = require('@truffle/contract');
@@ -85,6 +84,8 @@ export class Web3Service {
             }).catch((e) => {
               reject(e);
             });
+          }).catch((e: any) => {
+              reject(e);
           });
         } else {
           // TODO: This should really be done at the component level

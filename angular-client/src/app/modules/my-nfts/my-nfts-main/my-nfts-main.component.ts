@@ -38,7 +38,7 @@ export class MyNftsMainComponent implements OnInit {
 
         this.myAssets = [...resp]; // Clone the myAssets array
         if (resp.length === 0) {
-          this.errorMessage = 'No NFTs found for this wallet.' 
+          this.errorMessage = 'No NFTs found.' 
         }
         
         this.loading = false;

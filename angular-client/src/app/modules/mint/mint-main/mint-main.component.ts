@@ -44,7 +44,11 @@ export class MintMainComponent implements OnInit {
       this.assetsService.mintAsset(this.metadataURL, this.photoURL, this.price).then((asset) => {
         console.log('Asset=', asset);
       }).catch((e) => {
-        console.log('Error=', e);
+        if (e && e.message) {
+          this.errorMessage = e.message;
+        } else {
+          this.errorMessage = e;
+        }
       });    
     }
   }
