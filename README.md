@@ -4,7 +4,7 @@ Create a NFT that can be used by creatives who create stock photos, videos, temp
 
 ## Deployed UI
 
-TODO - Insert link here 
+[https://consensys-bootcamp.netlify.app/](https://consensys-bootcamp.netlify.app/)
 
 
 ## Getting Started Running Locally
@@ -61,12 +61,12 @@ When minting NFTs, most of the data is stored of chain, you will need links a pr
 #### NFT #1
 Photo URL - `ipfs://QmRAv59S1472S6r9zueNrDbf4qTqFYnhSCoocj7wnSXJ1j`
 
-Metadata URL - `http://localhost:4200/assets/morainelake.json`
+Metadata URL - `https://consensys-bootcamp.netlify.app/assets/morainelake.json`
 
 #### NFT #2
 Photo URL - `https://cdn.filestackcontent.com/resize=w:960/2pm1Hy8LTheFvZvzloUo`
 
-Metadata URL - `http://localhost:4200/assets/amazing-sea-stacks.json`
+Metadata URL - `https://consensys-bootcamp.netlify.app/assets/amazing-sea-stacks.json`
 
 ## Screencast link
 

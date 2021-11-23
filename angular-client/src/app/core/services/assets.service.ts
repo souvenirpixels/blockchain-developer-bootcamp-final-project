@@ -110,6 +110,8 @@ export class AssetsService {
       this.getAssetsPromise().then((assets) => {
         this.myAssetsCache = assets;
         this.myAssetsSubject.next(this.myAssetsCache);
+      }).catch((e) => {
+        console.warn('Error getting assets', e);
       });
     }
 
