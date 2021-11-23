@@ -4,7 +4,12 @@ Create a NFT that can be used by creatives who create stock photos, videos, temp
 
 ## Deployed UI [![Netlify Status](https://api.netlify.com/api/v1/badges/9ec9dce6-aa71-4e88-9520-2b3373464415/deploy-status)](https://app.netlify.com/sites/consensys-bootcamp/deploys)
 
-[https://consensys-bootcamp.netlify.app/](https://consensys-bootcamp.netlify.app/)
+[https://consensys-bootcamp.netlify.app/](https://consensys-bootcamp.netlify.app/) < Best tested on Rinkeby
+
+## Contract Address
+Rinkeby Contract Address - [0x108b2d3beaa005bdc96812c06420ea5d3079f76a](https://rinkeby.etherscan.io/address/0x108b2d3beaa005bdc96812c06420ea5d3079f76a)
+
+[View Rinkeby NFTs on Opensea](https://testnets.opensea.io/collection/universal-digital-asset-licencing-nft)
 
 
 ## Getting Started Running Locally
@@ -56,7 +61,7 @@ ng serve -o
 Angular UI will be available on http://localhost:4200/, ensure your metamask is using network localhost:8545
 
 ### Minting NFTs
-When minting NFTs, most of the data is stored of chain, you will need links a properly formated JSON metadata file and a image file.  The Angular client contains example files that can be used locally to mint your NFts for testing.  Here are the URLs (assumes you are running Angular on the default http://localhost:4200/)
+When minting NFTs, most of the data is stored off chain, you will need links a properly formated JSON metadata file and a image file.  The Angular client contains example files that can be used locally to mint your NFts for testing.  Here are the URLs (assumes you are running Angular on the default http://localhost:4200/)
 
 #### NFT #1
 Photo URL - `ipfs://QmRAv59S1472S6r9zueNrDbf4qTqFYnhSCoocj7wnSXJ1j`

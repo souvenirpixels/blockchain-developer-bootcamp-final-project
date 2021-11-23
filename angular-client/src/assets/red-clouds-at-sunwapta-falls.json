@@ -1,0 +1,60 @@
+{
+    "name": "Sunwapta Falls in Jasper",
+    "description": "Just got back from an amazing week in Banff and Jasper here is one of my favorite places we visited, Sunwapta Falls.", 
+    "external_url": "", 
+    "image": "https://photerloo.s3.amazonaws.com/small/1/5ff7cb78-2d0a-4816-bf71-1a4b4262bcfe.jpg", 
+    "animation_url": "",
+    "ldap_metadata_version": "0.1",
+    "sizes": {
+      "image_120px": "https://photerloo.s3.amazonaws.com/thumbnail/1/5ff7cb78-2d0a-4816-bf71-1a4b4262bcfe.jpg",
+      "image_240px": "https://photerloo.s3.amazonaws.com/thumbnail/1/5ff7cb78-2d0a-4816-bf71-1a4b4262bcfe.jpg",
+      "image_480px": "https://photerloo.s3.amazonaws.com/small/1/5ff7cb78-2d0a-4816-bf71-1a4b4262bcfe.jpg",
+      "image_960px": "https://photerloo.s3.amazonaws.com/small/1/5ff7cb78-2d0a-4816-bf71-1a4b4262bcfe.jpg",
+      "image_1920px": "https://photerloo.s3.amazonaws.com/fullsize/1/5ff7cb78-2d0a-4816-bf71-1a4b4262bcfe.jpg",
+      "image_3840px": "https://photerloo.s3.amazonaws.com/fullsize/1/5ff7cb78-2d0a-4816-bf71-1a4b4262bcfe.jpg",
+      "animation_url_120px": "",
+      "animation_url_240px": "",
+      "animation_url_480px": "",
+      "animation_url_960px": "",
+      "animation_url_1920px": "",
+      "animation_url_3840px": ""
+    },
+    "properties": 
+      {
+        "keywords": {
+            "name": "Keywords",
+            "display_type": "array",
+            "value": []
+        },
+        "creation_date": {
+            "name": "Creation Date",
+            "display_type": "date",
+            "value": "2021-12-04T03:55:30Z"
+        },
+        "asset_type": {
+            "name": "Type",
+            "display_type": "string",
+            "value": "Photo"
+        },
+        "pixel_height": {
+            "name": "Pixel Height",
+            "display_type": "number",
+            "value": "4707"
+        },
+        "pixel_width": {
+            "name": "Pixel Width",   
+            "display_type": "number",
+            "value": "8368"
+        },
+        "usage": {
+            "name": "Usage",
+            "display_type": "string",
+            "value": "Commercial"
+        },
+        "number_of_people": {
+            "name": "Number of People",
+            "display_type": "number",
+            "value": "0"
+        }
+      }
+}  

@@ -1,0 +1,60 @@
+{
+    "name": "The Kids Watching the Sunset",
+    "description": "Three children holding hands looking away at at beautiful sunset on a beach call San Joseph bay beach on Vancouver Island in British Columbia, Canada", 
+    "external_url": "", 
+    "image": "https://photerloo.s3.amazonaws.com/small/1/684ff771-9885-4434-a889-11bc99f17cb5.jpg", 
+    "animation_url": "",
+    "ldap_metadata_version": "0.1",
+    "sizes": {
+      "image_120px": "https://photerloo.s3.amazonaws.com/thumbnail/1/684ff771-9885-4434-a889-11bc99f17cb5.jpg",
+      "image_240px": "https://photerloo.s3.amazonaws.com/thumbnail/1/684ff771-9885-4434-a889-11bc99f17cb5.jpg",
+      "image_480px": "https://photerloo.s3.amazonaws.com/small/1/684ff771-9885-4434-a889-11bc99f17cb5.jpg",
+      "image_960px": "https://photerloo.s3.amazonaws.com/small/1/684ff771-9885-4434-a889-11bc99f17cb5.jpg",
+      "image_1920px": "https://photerloo.s3.amazonaws.com/fullsize/1/684ff771-9885-4434-a889-11bc99f17cb5.jpg",
+      "image_3840px": "https://photerloo.s3.amazonaws.com/fullsize/1/684ff771-9885-4434-a889-11bc99f17cb5.jpg",
+      "animation_url_120px": "",
+      "animation_url_240px": "",
+      "animation_url_480px": "",
+      "animation_url_960px": "",
+      "animation_url_1920px": "",
+      "animation_url_3840px": ""
+    },
+    "properties": 
+      {
+        "keywords": {
+            "name": "Keywords",
+            "display_type": "array",
+            "value": []
+        },
+        "creation_date": {
+            "name": "Creation Date",
+            "display_type": "date",
+            "value": "2020-11-04T03:55:30Z"
+        },
+        "asset_type": {
+            "name": "Type",
+            "display_type": "string",
+            "value": "Photo"
+        },
+        "pixel_height": {
+            "name": "Pixel Height",
+            "display_type": "number",
+            "value": "4917"
+        },
+        "pixel_width": {
+            "name": "Pixel Width",   
+            "display_type": "number",
+            "value": "7376"
+        },
+        "usage": {
+            "name": "Usage",
+            "display_type": "string",
+            "value": "Commercial"
+        },
+        "number_of_people": {
+            "name": "Number of People",
+            "display_type": "number",
+            "value": "3"
+        }
+      }
+}  
