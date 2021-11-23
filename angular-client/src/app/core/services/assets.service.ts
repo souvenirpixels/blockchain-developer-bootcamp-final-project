@@ -80,11 +80,7 @@ export class AssetsService {
       })).subscribe(
         data => {  },
         error => {
-          if (error.message) {
-            reject(error.message);
-          } else {
-            reject(error.error);
-          }
+          reject(new Error('Readmetadata http error'));
         }
       );  
     });    
@@ -101,7 +97,10 @@ export class AssetsService {
       promises.push(this.readMetadata(asset));
     }
 
-    return Promise.all(promises);
+    // This can be done with Promise.allSettled in future vesrions of Typscript
+    // All these does is return only the non error promises
+    const results = await Promise.all(promises.map(p => p.catch(e => e)));
+    return results.filter(result => !(result instanceof Error));
   }
 
   getMyAssets(): Observable<Asset[]> {
@@ -134,12 +133,11 @@ export class AssetsService {
         console.log('Failed to get assetURI', asset);
       }
       
-      
       promises.push(this.readMetadata(asset));
     }
 
-    return Promise.all(promises);
-
+    const results = await Promise.all(promises.map(p => p.catch(e => e)));
+    return results.filter(result => !(result instanceof Error));
   }
 
   getAllAssets(): Observable<Asset[]> {
