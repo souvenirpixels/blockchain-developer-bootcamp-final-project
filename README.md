@@ -75,7 +75,7 @@ Metadata URL - `https://consensys-bootcamp.netlify.app/assets/amazing-sea-stacks
 
 ## Screencast link
 
-TODO - Insert link here
+[Link to video walkthrough of the UI](https://drive.google.com/file/d/1idUrFucn_fQYyWOF27ektrhBzApCTaNG/view?usp=drivesdk)
 
 ## Ethereum account for NFT certification
 `0x3b6944228E738EB4ba1b245024556fAAbc722b3d`
