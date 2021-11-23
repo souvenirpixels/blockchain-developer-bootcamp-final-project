@@ -21,6 +21,8 @@
   "homepage": "https://github.com/souvenirpixels/blockchain-developer-bootcamp-final-project#readme",
   "dependencies": {
     "@openzeppelin/contracts": "4.3.2",
-    "@openzeppelin/test-helpers": "0.5.13"
+    "@openzeppelin/test-helpers": "0.5.13",
+    "@truffle/hdwallet-provider": "^1.7.0",
+    "dotenv": "^10.0.0"
   }
 }
