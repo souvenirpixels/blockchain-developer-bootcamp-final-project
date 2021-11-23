@@ -58,24 +58,29 @@ ng build
 ng serve -o
 ```
 
-Angular UI will be available on http://localhost:4200/, ensure your metamask is using network localhost:8545
+Next make sure you have [Ganache CLI](https://www.trufflesuite.com/ganache) running with the following command
+```
+ganache-cli
+```
 
-### Minting NFTs
-When minting NFTs, most of the data is stored off chain, you will need links a properly formated JSON metadata file and a image file.  The Angular client contains example files that can be used locally to mint your NFts for testing.  Here are the URLs (assumes you are running Angular on the default http://localhost:4200/)
-
-#### NFT #1
-Photo URL - `ipfs://QmRAv59S1472S6r9zueNrDbf4qTqFYnhSCoocj7wnSXJ1j`
-
-Metadata URL - `https://consensys-bootcamp.netlify.app/assets/morainelake.json`
-
-#### NFT #2
-Photo URL - `https://cdn.filestackcontent.com/resize=w:960/2pm1Hy8LTheFvZvzloUo`
-
-Metadata URL - `https://consensys-bootcamp.netlify.app/assets/amazing-sea-stacks.json`
+Angular UI will be available on http://localhost:4200/, ensure your metamask is using the local ganache network at localhost:8545
 
 ## Screencast link
 
 [Link to video walkthrough of the UI](https://drive.google.com/file/d/1idUrFucn_fQYyWOF27ektrhBzApCTaNG/view?usp=drivesdk)
+
+### Minting NFTs
+When minting NFTs, most of the data is stored off chain, to test, you will need links a to JSON files in the [UDAL Metadata JSON format](README_UDAL_METADATA_JSON.md) and a image file.  The Angular client contains example files that can be used locally to mint your NFts for testing.  Here are the URLs (assumes you are running Angular on the default http://localhost:4200/)
+
+#### Test NFT Data #1
+Photo URL - `ipfs://QmRAv59S1472S6r9zueNrDbf4qTqFYnhSCoocj7wnSXJ1j`
+
+Metadata URL - `https://consensys-bootcamp.netlify.app/assets/morainelake.json`
+
+#### Test NFT Data #2
+Photo URL - `https://cdn.filestackcontent.com/resize=w:960/2pm1Hy8LTheFvZvzloUo`
+
+Metadata URL - `https://consensys-bootcamp.netlify.app/assets/amazing-sea-stacks.json`
 
 ## Ethereum account for NFT certification
 `0x3b6944228E738EB4ba1b245024556fAAbc722b3d`
@@ -95,15 +100,15 @@ To mint a licencable NFT the photographer must register the photo for sale.  Thr
 
 ### Mint Workflow
 
-1. Creator uploads a asset file (photo, video, etc) to [IPFS](https://ipfs.io/).
-2. Creator uploads a metadata JSON file to [IPFS](https://ipfs.io/).  The metadata JSON file must conform to the [UDAL Metadata JSON format](README_UDAL_METADATA_JSON.md).
+1. Creator uploads a asset file (photo, video, etc) to [IPFS](https://ipfs.io/), [Arweave](https://www.arweave.org/) or Web 2.0 server.
+2. Creator uploads a metadata JSON file to [IPFS](https://ipfs.io/), [Arweave](https://www.arweave.org/) or Web 2.0 server.  The metadata JSON file must conform to the [UDAL Metadata JSON format](README_UDAL_METADATA_JSON.md).
 3. Creator interacts with smart contract to register the photo for sale.  The Creator provides the following information:
-    * IPFSHash
-    * Metadata IPFSHash
+    * Token URI
+    * Asset URI
     * Purchase Price
 
 ```
-  /// @notice Registers an assete for sale in the contract
+  /// @notice Registers an asset for sale in the contract
   /// @dev tokenURI and assetURI should have prefix http, https, ipfs or ar.  For example, use ar://MAVgEMO3qlqe-qHNVs00qgwwbCb6FY2k15vJP3gBLW4 
   ///      instead of https://arweave.net/MAVgEMO3qlqe-qHNVs00qgwwbCb6FY2k15vJP3gBLW4.  Emits Created with ID of asset when completed.
   /// @param _tokenURI URI of the json file containing the metadata in JSON format.  Should conform to the ERC721 Metadata JSON Schema
@@ -150,13 +155,12 @@ Licencor should be able to purchase a licence to use the file commercially
 ```
 
 ## Future Roadmap
-The following features may be added to project depending based on time available before due date.
+The following features will be added to the project but weren't available by the November 30th due date.
 1. Circuit breaker to stop use of contract if bugs (Pauser), use access control to only allow those with access to pause.
 1. Change the licence to be an ERC1155 NFT token.  This will allow the licences to be searched and listed more efficiently.
-1. Add search feature for finding photos to purchase.  This will require a third party search service like [the graph](https://thegraph.com/en/).
+1. Add search feature for finding photos to purchase.  This will require a in indexing protocol like [the graph](https://thegraph.com/en/).
 1. Ability to accept different cryptocurrencies / tokens for licence purchase (for example: DAI, USDC, USDT)
 1. Ability to share revenue from a asset sale with different people at specific percentages.
-1. Ability to search a collection of assets for sale based on asset metadata.
 1. Require an custom ERC20 token to be staked in order to register a asset for sale.  The stake would be slashed for copyright infringement and invalid assetURI.
 1. Ability to flag asset as copyright infringement
 1. Ability to upgrade the contract
