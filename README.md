@@ -2,10 +2,9 @@
 
 Create a NFT that can be used by creatives who create stock photos, videos, templates or other digital assets to licence their creations without the need for a centralized agency.
 
-## Deployed UI
+## Deployed UI [![Netlify Status](https://api.netlify.com/api/v1/badges/9ec9dce6-aa71-4e88-9520-2b3373464415/deploy-status)](https://app.netlify.com/sites/consensys-bootcamp/deploys)
 
 [https://consensys-bootcamp.netlify.app/](https://consensys-bootcamp.netlify.app/)
-[![Netlify Status](https://api.netlify.com/api/v1/badges/9ec9dce6-aa71-4e88-9520-2b3373464415/deploy-status)](https://app.netlify.com/sites/consensys-bootcamp/deploys)
 
 
 ## Getting Started Running Locally
