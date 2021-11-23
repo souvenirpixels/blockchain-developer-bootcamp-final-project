@@ -5,6 +5,7 @@ Create a NFT that can be used by creatives who create stock photos, videos, temp
 ## Deployed UI
 
 [https://consensys-bootcamp.netlify.app/](https://consensys-bootcamp.netlify.app/)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/9ec9dce6-aa71-4e88-9520-2b3373464415/deploy-status)](https://app.netlify.com/sites/consensys-bootcamp/deploys)
 
 
 ## Getting Started Running Locally

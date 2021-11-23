@@ -8,8 +8,8 @@ import { AssetsService } from 'src/app/core/services/assets.service';
   styleUrls: ['./mint-main.component.scss']
 })
 export class MintMainComponent implements OnInit {
-  photoURL: string='ipfs://QmRAv59S1472S6r9zueNrDbf4qTqFYnhSCoocj7wnSXJ1j'; // Default for testing fix later
-  metadataURL: string='http://localhost:4200/assets/morainelake.json'; // Default for testing fix later
+  photoURL: string; 
+  metadataURL: string; 
   price: number;
   errorMessage: string;
   pendingAssetList: Asset[] = [];
