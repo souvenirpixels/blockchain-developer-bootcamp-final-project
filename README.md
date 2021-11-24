@@ -44,6 +44,19 @@ truffle migrate
 truffle test
 ```
 
+### Testnet Deployment
+To deploy to a testnet you will need to create a .env file in the root directory with the following variables
+```
+MNEMONIC="<ENTER YOUR MNEMONIC WITH SOME TEST ETH HERE>"
+RINKEBY_INFURA_URL="https://rinkeby.infura.io/<YOURPROJECTENDPOINT>"
+ROPSTEN_INFURA_URL="https://ropsten.infura.io/<YOURPROJECTENDPOINT>"
+```
+Then you can run one of the following commands:
+```
+truffle migrate --network rinkeby
+truffle migrate --network ropsten
+```
+
 ### Angular UI
 To run the angular UI locally, navigate to the angular-client directory
 
