@@ -80,7 +80,7 @@ Angular UI will be available on http://localhost:4200/, ensure your metamask is 
 
 ## Screencast link
 
-[Link to video walkthrough of the UI](https://drive.google.com/file/d/1idUrFucn_fQYyWOF27ektrhBzApCTaNG/view?usp=drivesdk)
+[Link to video walkthrough of the UI](https://youtu.be/sD27aRb4Sm4)
 
 ### Minting NFTs
 When minting NFTs, most of the data is stored off chain, to test, you will need links a to JSON files in the [UDAL Metadata JSON format](README_UDAL_METADATA_JSON.md) and a image file.  The Angular client contains example files that can be used locally to mint your NFts for testing.  Here are the URLs (assumes you are running Angular on the default http://localhost:4200/)
