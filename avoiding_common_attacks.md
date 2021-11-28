@@ -10,7 +10,7 @@ Only one modifier is used (hasLicence), and it is used for validation.
 Timestamps are not used in the code
 
 ### SWC-107 - Re-entrancy
-In the purchaseLicence function, the licence is granted AFTER the payment has completed.
+In the purchaseLicence function, the licence set to true before the eth is transfered to avoid re-entrancy issues.
 
 ### SWC-115 - Authorization through tx.origin
 msg.sender is used to authenticate the caller in all cases

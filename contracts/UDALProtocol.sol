@@ -59,8 +59,11 @@ contract UDALProtocol is ERC721("Universal Digital Asset Licencing NFT", "UDALNF
       require (msg.value >= _assetInfo[tokenId].price, "Not enough Eth to purchase");
       require (!_assetInfo[tokenId].purchasedLicences[msg.sender], "Licence already purchased");
 
-      payable(ownerOf(tokenId)).transfer(msg.value);
       _assetInfo[tokenId].purchasedLicences[msg.sender] = true;
+
+      (bool sent, ) = payable(ownerOf(tokenId)).call{value: msg.value}("");
+      require(sent, "Failed to send Ether");
+
       emit LicencePurchased(_assetInfo[tokenId].assetURI, msg.value);
   }
 
